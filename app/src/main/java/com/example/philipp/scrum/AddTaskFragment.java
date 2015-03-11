@@ -50,7 +50,7 @@ public class AddTaskFragment extends DialogFragment
                 //Send the entered text back to mainActivity which processes it further
                 String projectName = projectNameEdittext.getText().toString().trim();
                 MainActivity callingActivity = (MainActivity) getActivity();
-                callingActivity.createNewProject(projectName);
+                callingActivity.createNewProject(projectName, "this is a test string");
             }
         });
 

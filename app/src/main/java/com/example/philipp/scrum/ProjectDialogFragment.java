@@ -15,6 +15,7 @@ import android.widget.EditText;
 public class ProjectDialogFragment extends DialogFragment
 {
     private EditText projectNameEdittext;
+    private EditText projectDescEdittext;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
@@ -32,17 +33,20 @@ public class ProjectDialogFragment extends DialogFragment
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
         projectNameEdittext = (EditText) dialogLayout.findViewById(R.id.dialog_projectname_edittext);
+        projectDescEdittext = (EditText) dialogLayout.findViewById(R.id.dialog_projectdescription_edittext);
 
         // Assign the buttons
-        dialogBuilder.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
+        dialogBuilder.setPositiveButton(R.string.add, new DialogInterface.OnClickListener()
+        {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(DialogInterface dialog, int which)
+            {
                 //Send the entered text back to mainActivity which processes it further
                 String projectName = projectNameEdittext.getText().toString().trim();
+                String projectDesc = projectDescEdittext.getText().toString().trim();
                 MainActivity callingActivity = (MainActivity) getActivity();
-                callingActivity.createNewProject(projectName);
+                callingActivity.createNewProject(projectName, projectDesc);
                 imm.hideSoftInputFromWindow(projectNameEdittext.getWindowToken(), 0);
-
             }
         });
 

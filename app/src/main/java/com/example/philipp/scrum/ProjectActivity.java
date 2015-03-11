@@ -8,7 +8,6 @@ import android.support.v4.view.ViewPager;
 
 import com.astuetz.PagerSlidingTabStrip;
 
-
 public class ProjectActivity extends FragmentActivity {
 
     @Override
@@ -25,7 +24,7 @@ public class ProjectActivity extends FragmentActivity {
 
         //Get Project Title
         Intent intent = getIntent();
-        String name = intent.getStringExtra("projectName");
+        String name = getIntent().getStringExtra("projectName");
 
         Bundle bundle = new Bundle();
         bundle.putString("edttext", "From Activity");

@@ -1,6 +1,5 @@
 package com.example.philipp.scrum;
 
-
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,12 +15,12 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity {
+
     ArrayList<String> projectsArray = new ArrayList<String>();
     ArrayAdapter<String> projectsListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -50,14 +49,14 @@ public class MainActivity extends ActionBarActivity {
         });
     }
 
-    public void createNewProject(String name)
+    public void createNewProject(String name, String description)
     {
         // Check if name is empty (name has been trimmed before)
         if (name.length() > 0)
         {
-            // Add it to the list of projects. TODO: make it an actual object
-            projectsArray.add(name);
-            projectsListAdapter.notifyDataSetChanged();
+            // Add it to the list of projects. TODO: make it an actual object. DONE BIATCHES
+            new Project(name, description);
+            // TODO: Read the "Everything" object from memory, add the project and store it again.
         }
         else
         {
@@ -72,13 +71,17 @@ public class MainActivity extends ActionBarActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         int id = item.getItemId();
 
+        // If the user clicked the add button...
+        if(id == R.id.action_add_task)
+        {
+            // ...Show up the dialog for adding a new project
             DialogFragment myDialogFragment = new ProjectDialogFragment();
-
             myDialogFragment.show(getFragmentManager(), "addProjectDialog");
-            return true;
-
+        }
+        return true;
     }
 }

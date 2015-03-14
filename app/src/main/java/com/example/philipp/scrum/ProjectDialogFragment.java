@@ -10,7 +10,16 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-
+/**
+ * This fragment displays the dialog for adding a new project. The corresponding layout file is in
+ * /res/layout/fragment_project_dialog.xml. It is displayed when the user taps the "add" button in
+ * the projects overview.
+ *
+ * The fragment displays and manages two Edittext fields, one for the name and one for the
+ * description. It has a cancel and an add button. Both of them close the dialog, but the add button
+ * additionally calls back to the main activity which then makes a new project based on the EditText
+ * values.
+ */
 
 public class ProjectDialogFragment extends DialogFragment
 {
@@ -59,6 +68,7 @@ public class ProjectDialogFragment extends DialogFragment
             }
         });
 
+        // Return the finished android.app.Dialog object
         return dialogBuilder.create();
     }
 

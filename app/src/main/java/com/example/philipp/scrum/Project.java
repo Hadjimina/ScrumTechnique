@@ -23,12 +23,33 @@ public class Project
     String name;
     String description;
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Project(String name, String description)
     {
         // It is already ensured within MainActivity.createNewProject(name, description) that the
         // name is longer than 0. Also the two strings have already been trimmed.
         this.name = name;
         this.description = description;
+    }
+
+    public Task getTask(int category, int position)
+    {
+        return listOfTaskLists.get(category).get(position);
     }
 
     /**

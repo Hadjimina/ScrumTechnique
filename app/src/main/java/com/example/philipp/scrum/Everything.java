@@ -42,6 +42,10 @@ public class Everything implements Serializable
         return projectList.get(index);
     }
 
+    public int getProjectNumber()
+    {
+      return  projectList.size();
+    }
     public List<Project> getProjectList()
     {
         return this.projectList;

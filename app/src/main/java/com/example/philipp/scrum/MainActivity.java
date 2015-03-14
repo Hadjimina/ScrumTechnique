@@ -51,11 +51,13 @@ public class MainActivity extends ActionBarActivity {
             public void onItemClick(AdapterView<?> parent, View view, int itemPosition, long id) {
 
                 // ListView Clicked item value
-                String itemValue = (String) projectsListView.getItemAtPosition(itemPosition);
+                String projectName = projectList.get(itemPosition).getName();
+                String projectDesc = projectList.get(itemPosition).getDescription();
 
                 // Start ProjectActivity and pass it the selected Project
                 Intent myIntent = new Intent(MainActivity.this, ProjectActivity.class);
-                myIntent.putExtra("projectName", itemValue);
+                myIntent.putExtra("projectName", projectName);
+                myIntent.putExtra("projectDesc", projectDesc);
 
                 MainActivity.this.startActivity(myIntent);
             }

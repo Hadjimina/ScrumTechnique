@@ -17,9 +17,20 @@ public class A_OverView extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View ret =  inflater.inflate(R.layout.a_overview, null);
-        EditText title = (EditText) ret.findViewById(R.id.editText);
-        title.setText("Google is your friend.", TextView.BufferType.EDITABLE);
+
+        TextView Title = (TextView) ret.findViewById(R.id.projectTitle);
+        EditText Description = (EditText) ret.findViewById(R.id.editText);
         Button addtask = (Button) ret.findViewById(R.id.addtask);
+
+
+        //Get title and desc
+        String title = getActivity().getIntent().getStringExtra("projectName");
+        String desc = getActivity().getIntent().getStringExtra("projectDesc");
+
+        Title.setText(title);
+        Description.setText(desc, TextView.BufferType.EDITABLE);
+
+
 
         addtask.setOnClickListener(new View.OnClickListener() {
             @Override

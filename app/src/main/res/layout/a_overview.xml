@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Project Title"
-        android:id="@+id/textView2"
+        android:id="@+id/projectTitle"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="48dp" />
@@ -20,7 +20,7 @@
         android:layout_width="300dp"
         android:layout_height="100dp"
         android:id="@+id/editText"
-        android:layout_below="@+id/textView3"
+        android:layout_below="@+id/projectDescritpion"
         android:layout_centerHorizontal="true" />
 
     <TextView
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Project Description"
-        android:id="@+id/textView3"
+        android:id="@+id/projectDescritpion"
         android:layout_marginTop="99dp"
         android:layout_centerHorizontal="true" />
 

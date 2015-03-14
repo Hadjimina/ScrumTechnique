@@ -1,7 +1,6 @@
 package com.example.philipp.scrum;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -21,17 +20,6 @@ public class ProjectActivity extends FragmentActivity {
         // Bind the tabs to the ViewPager
         PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         tabs.setViewPager(pager);
-
-        //Get Project Title
-        Intent intent = getIntent();
-        String name = getIntent().getStringExtra("projectName");
-
-        Bundle bundle = new Bundle();
-        bundle.putString("edttext", "From Activity");
-
-        // set Fragmentclass Arguments
-        A_OverView fragobj = new A_OverView();
-        fragobj.setArguments(bundle);
 
     }
 }

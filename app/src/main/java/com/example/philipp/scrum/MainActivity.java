@@ -12,10 +12,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.List;
+
 public class MainActivity extends ActionBarActivity {
 
     // Never make this a ListAdapter again, otherwise notifyDataSetChanged() will cease working
-    ArrayAdapter projectsListAdapter; // = new ProjectsListAdapter(this, android.R.id.text1);
+    ArrayAdapter<Project> projectsListAdapter; // = new ProjectsListAdapter(this, android.R.id.text1);
 
     /**
      * Is called when the Activity is first instantiated
@@ -32,8 +34,13 @@ public class MainActivity extends ActionBarActivity {
         // final so that it can be accessed from the inner class at setOnItemClickListener.
         final ListView projectsListView = (ListView) findViewById(R.id.projectsListView);
 
-        // Make the list adapter and assign it to the list view
-        projectsListAdapter = new ProjectsListAdapter(this, android.R.id.text1);
+        // Get the current list of projects
+        Everything everything = new Everything();
+        everything.load(getApplicationContext());
+        List<Project> projectList = everything.getProjectList();
+
+        // Make the list adapter, pass it the project list and assign it to the list view
+        projectsListAdapter = new ProjectsListAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, projectList);
         projectsListView.setAdapter(projectsListAdapter);
 
         // ListView Item Click Listener

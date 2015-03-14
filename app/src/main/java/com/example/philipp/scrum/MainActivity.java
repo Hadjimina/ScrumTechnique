@@ -18,6 +18,7 @@ public class MainActivity extends ActionBarActivity {
 
     // Never make this a ListAdapter again, otherwise notifyDataSetChanged() will cease working
     ArrayAdapter<Project> projectsListAdapter; // = new ProjectsListAdapter(this, android.R.id.text1);
+    List<Project> projectList;
 
     /**
      * Is called when the Activity is first instantiated
@@ -37,7 +38,7 @@ public class MainActivity extends ActionBarActivity {
         // Get the current list of projects
         Everything everything = new Everything();
         everything.load(getApplicationContext());
-        List<Project> projectList = everything.getProjectList();
+        projectList = everything.getProjectList();
 
         // Make the list adapter, pass it the project list and assign it to the list view
         projectsListAdapter = new ProjectsListAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, projectList);
@@ -76,6 +77,12 @@ public class MainActivity extends ActionBarActivity {
             // Save everything
             everything.save(getApplicationContext());
 
+            //Update projectList
+            projectList.clear();
+            projectList = everything.getProjectList();
+
+          //  projectsListAdapter.clear();
+            projectsListAdapter.addAll(projectList);
             projectsListAdapter.notifyDataSetChanged();
         }
         else

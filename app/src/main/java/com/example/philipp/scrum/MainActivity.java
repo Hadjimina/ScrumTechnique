@@ -8,15 +8,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.util.List;
-
 public class MainActivity extends ActionBarActivity {
 
-    ListAdapter projectsListAdapter;
+    // Never make this a ListAdapter again, otherwise notifyDataSetChanged() will cease working
+    ArrayAdapter projectsListAdapter; // = new ProjectsListAdapter(this, android.R.id.text1);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,13 +28,7 @@ public class MainActivity extends ActionBarActivity {
         // final so that it can be accessed from the inner class at setOnItemClickListener.
         final ListView projectsListView = (ListView) findViewById(R.id.projectsListView);
 
-        // Get the current Everything object and get its project list for the list adapter
-        Everything everything = new Everything();
-        everything.load();
-        everything.addProject(new Project("this is a name", "this is a description"));
-        List<Project> projectsList = everything.getProjectList();
-
-        //
+        // Make the list adapter and assign it to the list view
         projectsListAdapter = new ProjectsListAdapter(this, android.R.id.text1);
         projectsListView.setAdapter(projectsListAdapter);
 
@@ -64,15 +57,16 @@ public class MainActivity extends ActionBarActivity {
         {
             // Load everything
             Everything everything = new Everything();
-            everything.load();
+            everything.load(getApplicationContext());
 
             // Create & add the Project
             everything.addProject(new Project(name, description));
 
             // Save everything
-            everything.save();
+            everything.save(getApplicationContext());
 
             refreshList();
+            projectsListAdapter.notifyDataSetChanged();
         }
         else
         {
@@ -83,7 +77,6 @@ public class MainActivity extends ActionBarActivity {
     public void refreshList()
     {
         Toast.makeText(this, "List should be refreshed", Toast.LENGTH_SHORT).show();
-        // projectsListAdapter.notifyDatasetChanged();
     }
 
     @Override

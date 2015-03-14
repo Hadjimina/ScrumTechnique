@@ -1,5 +1,6 @@
 package com.example.philipp.scrum;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  * 2D List of all the tasks
  */
 
-public class Project
+public class Project implements Serializable
 {
     /**
      * Looks a bit complicated at first glance. It's basically a 2D Array, a "List of Lists". The

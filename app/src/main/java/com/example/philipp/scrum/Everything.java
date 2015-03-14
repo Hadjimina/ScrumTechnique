@@ -1,5 +1,7 @@
 package com.example.philipp.scrum;
 
+import android.content.Context;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -23,6 +25,8 @@ import java.util.List;
 
 public class Everything implements Serializable
 {
+    static final long serialVersionUID = 3629739416051034729L;
+
     // The only field is a List of all projects.
     List<Project> projectList = new ArrayList<Project>();
 
@@ -50,13 +54,14 @@ public class Everything implements Serializable
 
     /**
      * This method saves an Everything object to internal storage. To use it, call Everything.save()
+     * It needs a context passed so that it can get the internal storage files directory.
      */
-    public void save()
+    public void save(Context context)
     {
         try
         {
-            // Make an ObjectOutputStream that writes objects to save.txt
-            FileOutputStream fos = new FileOutputStream(new File("save.txt"));
+            // Make an ObjectOutputStream that writes objects to scrumSave.txt
+            FileOutputStream fos = new FileOutputStream(new File(context.getFilesDir().getPath() + R.string.filename));
             ObjectOutputStream oos = new ObjectOutputStream(fos);
 
             // Write the object
@@ -76,13 +81,15 @@ public class Everything implements Serializable
     /**
      * This method loads a saved "Everything" object from memory. To load one, create one first and
      * then call createdEverything.load() to fill it with the stored projects.
+     *
+     * It needs a context passed so that it can get the internal storage files directory.
      */
-    public void load()
+    public void load(Context context)
     {
         try
         {
             // Make an ObjectInputStream that reads objects from save.txt
-            FileInputStream fis = new FileInputStream(new File("save.txt"));
+            FileInputStream fis = new FileInputStream(new File(context.getFilesDir().getPath() + R.string.filename));
             ObjectInputStream ois = new ObjectInputStream(fis);
 
             // We can cast the loaded object to an Everything because it already is one.

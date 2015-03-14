@@ -14,15 +14,17 @@ import java.util.List;
  */
 public class ProjectsListAdapter extends ArrayAdapter<Project>
 {
+    List<Project> items;
 
-    public ProjectsListAdapter(Context context, int textViewResourceId)
+    public ProjectsListAdapter(Context context, int textViewResourceID)
     {
-        super(context, textViewResourceId);
+        super(context, textViewResourceID);
     }
 
-    public ProjectsListAdapter(Context context, int resource, List<Project> items)
+    public ProjectsListAdapter(Context context, int textViewResourceID, List<Project> items)
     {
-        super(context, resource, items);
+        super(context, textViewResourceID, items);
+        this.items = items;
     }
 
     /**
@@ -42,9 +44,7 @@ public class ProjectsListAdapter extends ArrayAdapter<Project>
             v = inflater.inflate(android.R.layout.simple_list_item_1, null);
         }
 
-        Everything everything = new Everything();
-        everything.load();
-        Project p = everything.getProject(position);
+        Project p = items.get(position);
 
         if(p != null)
         {

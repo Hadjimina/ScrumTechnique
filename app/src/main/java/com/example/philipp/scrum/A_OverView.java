@@ -16,6 +16,7 @@ public class A_OverView extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+
         View ret =  inflater.inflate(R.layout.a_overview, null);
 
         TextView Title = (TextView) ret.findViewById(R.id.projectTitle);
@@ -43,4 +44,7 @@ public class A_OverView extends Fragment {
 
         return ret;
     }
+
+    //TODO show actionbar
+
 }

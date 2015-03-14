@@ -8,6 +8,6 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/b_todo_list"/>
+        android:id="@+id/task_list_view"/>
 
 </LinearLayout>

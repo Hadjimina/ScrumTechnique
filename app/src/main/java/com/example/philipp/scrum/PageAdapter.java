@@ -1,5 +1,6 @@
 package com.example.philipp.scrum;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -41,33 +42,17 @@ public class PageAdapter extends FragmentPagerAdapter {
 
         Fragment returningFragment = null;
 
-        switch (position)
+        if(position == 0)
         {
-            case 0:
-                returningFragment = new A_OverView();
-                break;
-
-            case 1:
-                returningFragment = new B_ToDo();
-                break;
-
-            case 2:
-                returningFragment = new C_Emergency();
-                break;
-
-            case 3:
-                returningFragment = new D_InProgress();
-                break;
-
-            case 4:
-                returningFragment = new E_Testing();
-                break;
-
-            case 5:
-                returningFragment = new F_Completed();
-                break;
+            returningFragment = new A_OverView();
         }
-
+        else
+        {
+            returningFragment = new B_ToDo();
+            Bundle fragmentArgs = new Bundle();
+            fragmentArgs.putInt("category", position);
+            returningFragment.setArguments(fragmentArgs);
+        }
         return returningFragment;
     }
 }

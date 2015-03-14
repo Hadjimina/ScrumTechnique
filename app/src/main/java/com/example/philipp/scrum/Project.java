@@ -33,6 +33,11 @@ public class Project implements Serializable
         this.description = description;
     }
 
+    public List<Task> getCategoryTaskList(int category)
+    {
+        return listOfTaskLists.get(category);
+    }
+
     public String getName() {
         return name;
     }
@@ -47,6 +52,13 @@ public class Project implements Serializable
         // name is longer than 0. Also the two strings have already been trimmed.
         this.name = name;
         this.description = description;
+
+        // Fill the list of Task lists with empty categories so that no invalid position is called
+        // by the task list fragments.
+        for(int i = 0; i<5; i++)
+        {
+            listOfTaskLists.add(new ArrayList<Task>());
+        }
     }
 
     public Task getTask(int category, int position)
@@ -73,7 +85,6 @@ public class Project implements Serializable
          * If this changes later on, we could do something like Project.sort() that sorts the tasks
          * of each category by date.
          */
-
         listOfTaskLists.get(category - 1).add(taskToAdd);
 
         // TODO save and load

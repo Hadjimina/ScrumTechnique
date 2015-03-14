@@ -36,11 +36,14 @@ public class TaskOverviewFragment extends Fragment {
         Button addTask = (Button) layout.findViewById(R.id.add_task);
         addTask.setOnClickListener(new View.OnClickListener()
         {
-
             @Override
             public void onClick(View v) {
-                // Show up a dialog to add a new Task when the user clicks the button
+                // Make a dialog to add a new Task when the user clicks the button
                 AddTaskFragment dialog = new AddTaskFragment();
+                Bundle dialogArgs = new Bundle();
+                // The category 0 is "To Do"
+                dialogArgs.putInt("category", 0);
+                dialog.setArguments(dialogArgs);
                 dialog.show(getActivity().getFragmentManager(), "MyDialogFragment");
             }
         });

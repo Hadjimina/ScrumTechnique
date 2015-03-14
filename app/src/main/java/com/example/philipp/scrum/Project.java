@@ -99,15 +99,7 @@ public class Project implements Serializable
     {
         int category = taskToAdd.getCategory();
 
-        /**
-         * -1 because category 0 is the overview. So the first category (To do) has the value 1, but
-         * is saved in the 0th index of the list.
-         *
-         * Order doesn't matter (yet), because there won't be many tasks in a specific category.
-         * If this changes later on, we could do something like Project.sort() that sorts the tasks
-         * of each category by date.
-         */
-        listOfTaskLists.get(category - 1).add(taskToAdd);
+        listOfTaskLists.get(category).add(taskToAdd);
 
         // Now that the project (this) is equipped with the new task, we may summon Everything and
         // replace the project with the new one

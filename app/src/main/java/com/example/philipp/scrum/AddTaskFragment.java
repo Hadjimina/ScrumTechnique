@@ -9,11 +9,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 
 public class AddTaskFragment extends DialogFragment
 {
-    private EditText projectNameEdittext;
+    private EditText taskNameEdittext;
+    private EditText taskDescEdittext;
+    private Spinner taskCategorySpinner;
+    private EditText yearEditText;
+    private EditText monthEditText;
+    private EditText dayEditText;
+
     Context mContext;
 
     public AddTaskFragment() {
@@ -35,16 +43,40 @@ public class AddTaskFragment extends DialogFragment
         InputMethodManager imm = (InputMethodManager)  getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
-        projectNameEdittext = (EditText) dialogLayout.findViewById(R.id.dialog_projectname_edittext);
+        // Initialise all the views in the dialog
+        taskNameEdittext =    (EditText) dialogLayout.findViewById(R.id.task_title_edittext);
+        taskDescEdittext =    (EditText) dialogLayout.findViewById(R.id.task_desc_edittext);
+        taskCategorySpinner = (Spinner)  dialogLayout.findViewById(R.id.spinner1);
+        yearEditText =        (EditText) dialogLayout.findViewById(R.id.date_year);
+        monthEditText =       (EditText) dialogLayout.findViewById(R.id.date_month);
+        dayEditText =         (EditText) dialogLayout.findViewById(R.id.date_day);
+
+        // Set the spinner
+        taskCategorySpinner.setSelection((int) getArguments().get("category"));
 
         // Assign the buttons
         dialogBuilder.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //Send the entered text back to mainActivity which processes it further
-                String projectName = projectNameEdittext.getText().toString().trim();
-                MainActivity callingActivity = (MainActivity) getActivity();
-                callingActivity.createNewProject(projectName, "this is a test string");
+                // Retrieve all the entered values
+                String taskName = taskNameEdittext.getText().toString().trim();
+                String taskDesc = taskDescEdittext.getText().toString().trim();
+                int category = taskCategorySpinner.getSelectedItemPosition();
+                String year = yearEditText.getText().toString();
+                String month = monthEditText.getText().toString();
+                String day = dayEditText.getText().toString();
+
+                // Only proceed if the name is not empty
+                if(!taskName.equals(""))
+                {
+                    // Send them back to the createTask method in ProjectActivity
+                    ProjectActivity callingActivity = (ProjectActivity) getActivity();
+                    callingActivity.createTask(taskName, taskDesc, category, year, day, month);
+                }
+                else
+                {
+                    Toast.makeText(getActivity().getApplicationContext(), "Name must not be empty", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

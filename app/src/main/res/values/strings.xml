@@ -25,7 +25,10 @@
     <string name="add_task_message">Add new Task</string>
     <string name="action_add_task">Add Task</string>
     <string name="dialog_description_hint">Project description</string>
-    <string name="filename">scrumSave.ser</string> <!-- DONT CHANGE IT WILL BREAK SERIALISATION -->
+    <string name="filename">scrumSave.ser</string>
+    <string name="action_add_task_hint">Add a Task</string>
+    <string name="menu_addtask_title">Add Task</string>
+    <!-- DONT CHANGE IT WILL BREAK SERIALISATION -->
 
     <string-array name="category_array">
         <item>To Do</item>

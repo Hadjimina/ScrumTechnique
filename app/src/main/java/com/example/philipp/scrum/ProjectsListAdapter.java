@@ -49,6 +49,7 @@ public class ProjectsListAdapter extends ArrayAdapter<Project>
         if(p != null)
         {
             TextView textView = (TextView) v.findViewById(android.R.id.text1);
+            textView.setTextColor(0xFF000000); // That's black with alpha 255
             textView.setText(p.getName());
         }
 

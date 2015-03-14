@@ -1,8 +1,10 @@
 package com.example.philipp.scrum;
 
+import java.io.Serializable;
 import java.util.GregorianCalendar;
 
-public class Task {
+public class Task implements Serializable
+{
 
     // Fields
     private String title;

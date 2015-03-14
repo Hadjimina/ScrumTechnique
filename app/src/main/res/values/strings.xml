@@ -25,6 +25,7 @@
     <string name="add_task_message">Add new Task</string>
     <string name="action_add_task">Add Task</string>
     <string name="dialog_description_hint">Project description</string>
+    <string name="filename">scrumSave.ser</string> <!-- DONT CHANGE IT WILL BREAK SERIALISATION -->
 
     <!-- wtf wieso "country"? eher category -->
     <string-array name="country_arrays">

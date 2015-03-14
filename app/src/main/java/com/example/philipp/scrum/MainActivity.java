@@ -12,34 +12,28 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.util.List;
-
 public class MainActivity extends ActionBarActivity {
 
-    ArrayAdapter projectsListAdapter;
+    // Never make this a ListAdapter again, otherwise notifyDataSetChanged() will cease working
+    ArrayAdapter projectsListAdapter; // = new ProjectsListAdapter(this, android.R.id.text1);
 
-    List<String> ProjectTitles;
-    Everything everything;
-
+    /**
+     * Is called when the Activity is first instantiated
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        // Create & apply the corresponding layout
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.getSupportActionBar().setTitle(R.string.main_activity_title);
-
+        // Link the listView in the layout to an android.widget.ListView object
         // final so that it can be accessed from the inner class at setOnItemClickListener.
         final ListView projectsListView = (ListView) findViewById(R.id.projectsListView);
 
-        Everything everything = new Everything();
-        everything.load();
-        everything.addProject(new Project("title","desc"));
-
-        List<Project> projectsList = everything.getProjectList();
-
         // Make the list adapter and assign it to the list view
-        projectsListAdapter = new ProjectsListAdapter(this, android.R.id.text1,projectsList);
+        projectsListAdapter = new ProjectsListAdapter(this, android.R.id.text1);
         projectsListView.setAdapter(projectsListAdapter);
 
         // ListView Item Click Listener
@@ -63,34 +57,24 @@ public class MainActivity extends ActionBarActivity {
     public void createNewProject(String name, String description)
     {
         // Check if name is empty (name has been trimmed before)
-        if (name.length() > 0) {
+        if (name.length() > 0)
+        {
             // Load everything
-           // Everything everything = new Everything();
-            everything.load();
+            Everything everything = new Everything();
+            everything.load(getApplicationContext());
 
             // Create & add the Project
             everything.addProject(new Project(name, description));
 
             // Save everything
-            everything.save();
+            everything.save(getApplicationContext());
 
-           //Refresh
-            refreshList();
-
+            projectsListAdapter.notifyDataSetChanged();
         }
-
         else
         {
             Toast.makeText(this, R.string.toast_project_name_empty, Toast.LENGTH_SHORT).show();
         }
-
-    }
-
-    public void refreshList()
-    {
-        Toast.makeText(this, "List should be refreshed", Toast.LENGTH_SHORT).show();
-
-
     }
 
     @Override

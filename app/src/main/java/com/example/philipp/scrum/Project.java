@@ -1,5 +1,6 @@
 package com.example.philipp.scrum;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,8 +11,9 @@ import java.util.List;
  * 2D List of all the tasks
  */
 
-public class Project
+public class Project implements Serializable
 {
+
     /**
      * Looks a bit complicated at first glance. It's basically a 2D Array, a "List of Lists". The
      * "outermost" index is the category, of which there will always be 5. So if you want to add
@@ -20,8 +22,8 @@ public class Project
     List<List<Task>> listOfTaskLists = new ArrayList<>();
 
     // Simple string fields
-    String name;
-    String description;
+    private String name;
+    private String description;
 
     public String getDescription() {
         return description;

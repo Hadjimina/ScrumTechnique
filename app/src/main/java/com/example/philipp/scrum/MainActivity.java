@@ -49,12 +49,10 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int itemPosition, long id) {
 
-                // ListView Clicked item value
-                String itemValue = (String) projectsListView.getItemAtPosition(itemPosition);
 
-                // Start ProjectActivity and pass it the selected Project
+                // Start ProjectActivity and pass it the index of selected Project
                 Intent myIntent = new Intent(MainActivity.this, ProjectActivity.class);
-                myIntent.putExtra("projectName", itemValue);
+                myIntent.putExtra("itemPosition", itemPosition);
 
                 MainActivity.this.startActivity(myIntent);
             }

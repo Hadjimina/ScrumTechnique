@@ -20,12 +20,6 @@ public class AddTaskFragment extends DialogFragment
         mContext = getActivity();
     }
 
-    public static AddTaskFragment newInstance() {
-        AddTaskFragment f = new AddTaskFragment();
-        return f;
-    }
-
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {

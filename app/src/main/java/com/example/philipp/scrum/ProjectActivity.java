@@ -1,7 +1,6 @@
 package com.example.philipp.scrum;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -9,6 +8,8 @@ import android.support.v4.view.ViewPager;
 import com.astuetz.PagerSlidingTabStrip;
 
 public class ProjectActivity extends FragmentActivity {
+
+    Everything everything = new Everything();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,16 +23,28 @@ public class ProjectActivity extends FragmentActivity {
         PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         tabs.setViewPager(pager);
 
-        //Get Project Title
-        Intent intent = getIntent();
-        String name = getIntent().getStringExtra("projectName");
+        // Get Project position...
+        int projectPosition = (int) getIntent().getExtras().get("itemPosition");
 
-        Bundle bundle = new Bundle();
-        bundle.putString("edttext", "From Activity");
+        // ... and get the whole project
+        everything.load(getApplicationContext());
+        Project currentProject = everything.getProject(projectPosition);
 
-        // set Fragmentclass Arguments
-        A_OverView fragobj = new A_OverView();
-        fragobj.setArguments(bundle);
+        // and its title
+        CharSequence title = currentProject.getName();
 
     }
+
+    /**
+     * Returns the project that is currently opened (the whole one, not the position). This is
+     * better than using a new Everything each fragment, since only one Everything is ever created.
+     *
+     * @return The currently opened project
+     */
+    public Project getProject()
+    {
+        int itemPosition = (int) getIntent().getExtras().get("itemPosition");
+        return everything.getProject(itemPosition);
+    }
+
 }

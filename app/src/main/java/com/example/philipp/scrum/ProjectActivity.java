@@ -1,13 +1,12 @@
 package com.example.philipp.scrum;
 
-
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarActivity;
 
 import com.astuetz.PagerSlidingTabStrip;
 
-public class ProjectActivity extends FragmentActivity {
+public class ProjectActivity extends ActionBarActivity {
 
     Everything everything = new Everything();
 
@@ -30,8 +29,9 @@ public class ProjectActivity extends FragmentActivity {
         everything.load(getApplicationContext());
         Project currentProject = everything.getProject(projectPosition);
 
-        // and its title
+        // and use its title as ActionBar title
         CharSequence title = currentProject.getName();
+        getSupportActionBar().setTitle(title);
 
     }
 

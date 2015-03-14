@@ -27,8 +27,8 @@
     <string name="dialog_description_hint">Project description</string>
     <string name="filename">scrumSave.ser</string> <!-- DONT CHANGE IT WILL BREAK SERIALISATION -->
 
-    <!-- wtf wieso "country"? eher category -->
-    <string-array name="country_arrays">
+    <string-array name="category_array">
+        <item>To Do</item>
         <item>Emergency</item>
         <item>In Progress</item>
         <item>Testing</item>

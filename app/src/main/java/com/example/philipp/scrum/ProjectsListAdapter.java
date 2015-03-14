@@ -10,9 +10,6 @@ import android.widget.TextView;
 import java.util.List;
 
 /**
- * An object of this class can return a ListView item in the form of an android.view.View that
- * represents a Project
- *
  * Created by balduin on 2015-03-12.
  */
 public class ProjectsListAdapter extends ArrayAdapter<Project>
@@ -36,30 +33,25 @@ public class ProjectsListAdapter extends ArrayAdapter<Project>
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
+        View v = convertView;
 
-        if (convertView == null)
+        if (v == null)
         {
             LayoutInflater inflater;
             inflater = LayoutInflater.from(getContext());
-            convertView = inflater.inflate(android.R.layout.simple_list_item_1, null);
+            v = inflater.inflate(android.R.layout.simple_list_item_1, null);
         }
 
         Everything everything = new Everything();
-        everything.load(getContext());
+        everything.load();
         Project p = everything.getProject(position);
-
-        TextView textView = (TextView) convertView.findViewById(android.R.id.text1);
 
         if(p != null)
         {
+            TextView textView = (TextView) v.findViewById(android.R.id.text1);
             textView.setText(p.getName());
         }
-        else
-        {
-            textView.setText("No Projects");
-        }
 
-
-        return convertView;
+        return v;
     }
 }

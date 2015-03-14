@@ -36,6 +36,7 @@ public class A_OverView extends Fragment {
         Button addTask = (Button) layout.findViewById(R.id.add_task);
         addTask.setOnClickListener(new View.OnClickListener()
         {
+
             @Override
             public void onClick(View v) {
                 // Show up a dialog to add a new Task when the user clicks the button
@@ -46,4 +47,7 @@ public class A_OverView extends Fragment {
 
         return layout;
     }
+
+    //TODO show actionbar
+
 }

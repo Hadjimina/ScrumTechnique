@@ -49,7 +49,7 @@ public class Everything implements Serializable
         return projectList.get(index);
     }
 
-    public int getProjectNumber()
+    public int getNumberOfProjects()
     {
       return  projectList.size();
     }
@@ -58,6 +58,7 @@ public class Everything implements Serializable
         return this.projectList;
     }
 
+    //TODO Add clear function
 
     /**
      * This method saves an Everything object to internal storage. To use it, call Everything.save()

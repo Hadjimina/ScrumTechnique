@@ -53,21 +53,17 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int itemPosition, long id) {
 
-<<<<<<< HEAD
-=======
                 // ListView Clicked item value
                 String projectName = projectList.get(itemPosition).getName();
                 String projectDesc = projectList.get(itemPosition).getDescription();
->>>>>>> 45ddf3007d3b93c7effa08dadc87e856b9cf8acb
 
                 // Start ProjectActivity and pass it the index of selected Project
                 Intent myIntent = new Intent(MainActivity.this, ProjectActivity.class);
-<<<<<<< HEAD
+
+                // Only the itemPosition is necessary, the Project can then be loaded
+                // in ProjectActivity and is reused by all the fragments
                 myIntent.putExtra("itemPosition", itemPosition);
-=======
-                myIntent.putExtra("projectName", projectName);
-                myIntent.putExtra("projectDesc", projectDesc);
->>>>>>> 45ddf3007d3b93c7effa08dadc87e856b9cf8acb
+
 
                 MainActivity.this.startActivity(myIntent);
             }

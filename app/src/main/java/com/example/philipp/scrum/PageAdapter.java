@@ -5,7 +5,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 /**
- * This class is a FragmentPagerAdapter, which means that it creates
+ * This class is a FragmentPagerAdapter, it creates the Fragments for the ViewPager depending on
+ * its position
  */
 
 public class PageAdapter extends FragmentPagerAdapter {

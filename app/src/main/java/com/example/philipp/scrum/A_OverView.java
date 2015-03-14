@@ -27,6 +27,7 @@ public class A_OverView extends Fragment {
         String title = currentProject.getName();
         titleText.setText(title);
 
+
         // Set the project description
         TextView descriptionText = (TextView) layout.findViewById(R.id.project_description);
         String description = currentProject.getDescription();

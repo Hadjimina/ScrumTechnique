@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * This class has the purpose of unifying all the projects with their tasks into one single object.
  *
@@ -25,6 +26,8 @@ import java.util.List;
 
 public class Everything implements Serializable
 {
+    // Without this, an exception is thrown that the expected and found Everything objects have
+    // different serialVersionUIDs.
     static final long serialVersionUID = 3629739416051034729L;
 
     // The only field is a List of all projects.
@@ -61,14 +64,15 @@ public class Everything implements Serializable
         try
         {
             // Make an ObjectOutputStream that writes objects to scrumSave.txt
-            FileOutputStream fos = new FileOutputStream(new File(context.getFilesDir().getPath() + R.string.filename));
+            File savefile = new File(context.getFilesDir().getPath() + R.string.filename);
+            FileOutputStream fos = new FileOutputStream(savefile);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
 
             // Write the object
             oos.writeObject(this);
-            oos.flush();
 
             // Clean up
+            oos.flush();
             oos.close();
             fos.close();
         }
@@ -88,17 +92,28 @@ public class Everything implements Serializable
     {
         try
         {
+            /**
+             * Even if you save a file to /files/scrumSave.ser it produces a file called /files/
+             * files2131492892. Using this horrible hack, we find the correct file: We get the
+             * files directory as a path string (which has no forward slash at the end) and append
+             * the magic number. This gives us the path to the file.
+             */
+            String pathString = context.getFilesDir().getPath() + "2131492892";
+            File savefile = new File(pathString);
+
             // Make an ObjectInputStream that reads objects from save.txt
-            FileInputStream fis = new FileInputStream(new File(context.getFilesDir().getPath() + R.string.filename));
+            FileInputStream fis = new FileInputStream(savefile);
             ObjectInputStream ois = new ObjectInputStream(fis);
 
-            // We can cast the loaded object to an Everything because it already is one.
-            // Then its projectList is saved into the Everything this method is called on.
-            this.projectList = ((Everything) ois.readObject()).projectList;
+            // Cast the loaded object because it always is an Everything
+            Everything loadedEverything = null;
+            loadedEverything = (Everything) ois.readObject();
+
+            // Transfer the heart of the object, the project list
+            this.projectList = loadedEverything.getProjectList();
 
             // Clean up
             ois.close();
-            fis.close();
         }
         catch (Exception ex)
         {

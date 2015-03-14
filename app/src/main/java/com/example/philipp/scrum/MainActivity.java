@@ -17,14 +17,18 @@ public class MainActivity extends ActionBarActivity {
     // Never make this a ListAdapter again, otherwise notifyDataSetChanged() will cease working
     ArrayAdapter projectsListAdapter; // = new ProjectsListAdapter(this, android.R.id.text1);
 
+    /**
+     * Is called when the Activity is first instantiated
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        // Create & apply the corresponding layout
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.getSupportActionBar().setTitle(R.string.main_activity_title);
-
+        // Link the listView in the layout to an android.widget.ListView object
         // final so that it can be accessed from the inner class at setOnItemClickListener.
         final ListView projectsListView = (ListView) findViewById(R.id.projectsListView);
 
@@ -65,18 +69,12 @@ public class MainActivity extends ActionBarActivity {
             // Save everything
             everything.save(getApplicationContext());
 
-            refreshList();
             projectsListAdapter.notifyDataSetChanged();
         }
         else
         {
             Toast.makeText(this, R.string.toast_project_name_empty, Toast.LENGTH_SHORT).show();
         }
-    }
-
-    public void refreshList()
-    {
-        Toast.makeText(this, "List should be refreshed", Toast.LENGTH_SHORT).show();
     }
 
     @Override

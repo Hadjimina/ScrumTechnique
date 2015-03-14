@@ -13,6 +13,7 @@ import java.util.List;
 
 public class Project implements Serializable
 {
+
     /**
      * Looks a bit complicated at first glance. It's basically a 2D Array, a "List of Lists". The
      * "outermost" index is the category, of which there will always be 5. So if you want to add
@@ -21,8 +22,8 @@ public class Project implements Serializable
     List<List<Task>> listOfTaskLists = new ArrayList<>();
 
     // Simple string fields
-    String name;
-    String description;
+    private String name;
+    private String description;
 
     public String getDescription() {
         return description;

@@ -48,11 +48,17 @@ public class ProjectsListAdapter extends ArrayAdapter<Project>
         everything.load(getContext());
         Project p = everything.getProject(position);
 
+        TextView textView = (TextView) convertView.findViewById(android.R.id.text1);
+
         if(p != null)
         {
-            TextView textView = (TextView) convertView.findViewById(android.R.id.text1);
             textView.setText(p.getName());
         }
+        else
+        {
+            textView.setText("No Projects");
+        }
+
 
         return convertView;
     }

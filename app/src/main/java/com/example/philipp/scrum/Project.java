@@ -27,10 +27,14 @@ public class Project implements Serializable
     private String name;
     private String description;
 
+    /**
+     * Getter and setter method
+     */
     public String getDescription() {
         return description;
     }
 
+    // Probably not needed
     public void setDescription(String description) {
         this.description = description;
     }
@@ -63,6 +67,13 @@ public class Project implements Serializable
         }
     }
 
+    /**
+     * Probably not needed
+     *
+     * @param category - The category of the wanted task
+     * @param position - The position of the wanted task within its category
+     * @return - The task located at the specified category and position
+     */
     public Task getTask(int category, int position)
     {
         return listOfTaskLists.get(category).get(position);
@@ -107,6 +118,10 @@ public class Project implements Serializable
 
     }
 
+    /**
+     * @param category The category of the task to be removed
+     * @param task The location of the task to be removed within its category
+     */
     public void removeTask(int category, int task)
     {
         listOfTaskLists.get(category).remove(task);

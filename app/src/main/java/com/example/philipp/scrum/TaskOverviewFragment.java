@@ -8,15 +8,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class A_OverView extends Fragment {
-
+public class TaskOverviewFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
 
         // Inflate the layout
-        View layout = inflater.inflate(R.layout.a_overview, null);
+        View layout = inflater.inflate(R.layout.fragment_taskoverview, null);
 
         // Get the currently opened project. Cast to ProjectActivity since not every Activity has
         // the getProject() method.

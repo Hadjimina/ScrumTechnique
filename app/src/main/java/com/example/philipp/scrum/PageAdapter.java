@@ -6,12 +6,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 /**
- * This class is a FragmentPagerAdapter, it creates the Fragments for the ViewPager depending on
- * its position
+ * This class is a FragmentPagerAdapter. It creates the Fragments for the ViewPager depending on
+ * its position.
  */
 
 public class PageAdapter extends FragmentPagerAdapter {
-
 
     // The array of titles for the various pages. First comes the overview, then all the categories.
     CharSequence[] titles = {"Overview","To Do","Emergency","In Progress","Testing","Completed"};
@@ -22,20 +21,29 @@ public class PageAdapter extends FragmentPagerAdapter {
         super(fm);
     }
 
-    // Returns the title of the page at the specified position
+    /**
+     * @param position - The position of the title to be returned
+     * @return The category title corresponding to the given position
+     */
     @Override
     public CharSequence getPageTitle(int position)
     {
         return titles[position];
     }
 
-    // Returns length of the title array = number of pages
+    /**
+     * @return The number of titles = number of viewPager pages
+     */
     @Override
     public int getCount() {
         return titles.length;
     }
 
-    // Returns the fragment that corresponds to the given position.
+    /**
+     * @param position - The position of the Fragment to be returned
+     * @return The Fragment that corresponds to the given position. It will be displayed in the
+     *         ViewPager in ProjectActivity.
+     */
     @Override
     public Fragment getItem(int position)
     {
@@ -44,13 +52,15 @@ public class PageAdapter extends FragmentPagerAdapter {
 
         if(position == 0)
         {
-            returningFragment = new A_OverView();
+            returningFragment = new TaskOverviewFragment();
         }
         else
         {
-            returningFragment = new B_ToDo();
+            returningFragment = new TaskListFragment();
             Bundle fragmentArgs = new Bundle();
-            fragmentArgs.putInt("category", position);
+
+            // position - 1 = category
+            fragmentArgs.putInt("category", position - 1);
             returningFragment.setArguments(fragmentArgs);
         }
         return returningFragment;

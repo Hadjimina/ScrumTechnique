@@ -53,6 +53,7 @@ public class Everything implements Serializable
     {
       return  projectList.size();
     }
+
     public List<Project> getProjectList()
     {
         return this.projectList;
@@ -126,5 +127,22 @@ public class Everything implements Serializable
             // it empty.
             ex.printStackTrace();
         }
+    }
+
+    /**
+     * This method allows you to comfortably replace a project with a new version.
+     * IMPORTANT: Don't forget to load and save the current Everything when using this method.
+     * Example is in Project.java, in addTask(). It will probably stay the only place that needs
+     * the setProject() method.
+     *
+     * @param projectPosition
+     * The position that should be overwritten
+     *
+     * @param project
+     * The project that should be saved in the given position
+     */
+    public void setProject(int projectPosition, Project project)
+    {
+        this.projectList.set(projectPosition, project);
     }
 }

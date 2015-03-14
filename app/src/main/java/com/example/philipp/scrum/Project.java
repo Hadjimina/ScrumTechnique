@@ -1,5 +1,7 @@
 package com.example.philipp.scrum;
 
+import android.content.Context;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,8 +74,17 @@ public class Project implements Serializable
      *
      * @param taskToAdd
      * The task object that should be added to the "database"
+     *
+     * @param projectPosition
+     * This parameter could also be found out by the function itself by searching for the current
+     * project in the project List from Everything, however it is easier to just provide it to it
+     * since every activity/fragment that can add a task already has this information.
+     *
+     * @param context
+     * It needs a context to call the load() and save() functions (go to Everything.java to see why
+     * they need a context). Just use getApplicationContext() or getActivity().getAppContext().
      */
-    public void addTask(Task taskToAdd)
+    public void addTask(Task taskToAdd, int projectPosition, Context context)
     {
         int category = taskToAdd.getCategory();
 
@@ -87,9 +98,13 @@ public class Project implements Serializable
          */
         listOfTaskLists.get(category - 1).add(taskToAdd);
 
-        // TODO save and load
-        // Ideally, we would have something like IOHelper.save() or IOHelper.load() that saves and
-        // loads everything in a simple manner. This would be a good moment to call it.
+        // Now that the project (this) is equipped with the new task, we may summon Everything and
+        // replace the project with the new one
+        Everything everything = new Everything();
+        everything.load(context);
+        everything.setProject(projectPosition, this);
+        everything.save(context);
+
     }
 
     public void removeTask(int category, int task)

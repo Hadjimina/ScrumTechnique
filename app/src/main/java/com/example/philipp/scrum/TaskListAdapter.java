@@ -27,6 +27,11 @@ public class TaskListAdapter extends ArrayAdapter<Task>
         this.items = items;
     }
 
+    public void setItems(List<Task> items)
+    {
+        this.items = items;
+    }
+
     /**
      * Given an index which project to display, this method returns a view which contains a TextView
      * which in turn is filled with the name of the project. The returned view is used as a ListView

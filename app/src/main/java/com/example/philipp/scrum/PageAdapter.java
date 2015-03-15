@@ -1,5 +1,6 @@
 package com.example.philipp.scrum;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,11 +16,34 @@ public class PageAdapter extends FragmentPagerAdapter {
     // The array of titles for the various pages. First comes the overview, then all the categories.
     CharSequence[] titles = {"Overview","To Do","Emergency","In Progress","Testing","Completed"};
 
-    // Constructor is already implemented by the superclass, so we use that.
+    private int projectPosition = 0;
+    private Context context;
+
+    public Context getContext()
+    {
+        return this.context;
+    }
+
+    public void setContext(Context context)
+    {
+        this.context = context;
+    }
+    public int getProjectPosition()
+    {
+        return this.projectPosition;
+    }
+
+    public void setProjectPosition(int position)
+    {
+        this.projectPosition = position;
+    }
+
+    // Default Constructor
     public PageAdapter(FragmentManager fm)
     {
         super(fm);
     }
+
 
     /**
      * @param position - The position of the title to be returned
@@ -29,6 +53,11 @@ public class PageAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position)
     {
         return titles[position];
+    }
+
+    public void notifyDatasetChanged() {
+        super.notifyDataSetChanged();
+
     }
 
     /**
@@ -48,19 +77,24 @@ public class PageAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position)
     {
 
+        // Initialise the fragment that will later be returned
         Fragment returningFragment = null;
 
+        // For the leftmost position we generate an overview Fragment
         if(position == 0)
         {
             returningFragment = new TaskOverviewFragment();
         }
+        // For all other positions, we make a TaskListFragment and tell it which category to display
         else
         {
-            returningFragment = new TaskListFragment();
+            returningFragment = TaskListFragment.newInstance(this.context);
             Bundle fragmentArgs = new Bundle();
 
+            // Pass the returning Fragment some arguments - the current category and project
             // position - 1 = category
             fragmentArgs.putInt("category", position - 1);
+            fragmentArgs.putInt("project", this.projectPosition);
             returningFragment.setArguments(fragmentArgs);
         }
         return returningFragment;

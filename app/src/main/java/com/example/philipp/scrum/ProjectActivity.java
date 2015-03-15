@@ -10,8 +10,8 @@ import com.astuetz.PagerSlidingTabStrip;
 
 public class ProjectActivity extends ActionBarActivity {
 
-    Everything everything = new Everything();
     ViewPager pager;
+    PageAdapter viewPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +19,10 @@ public class ProjectActivity extends ActionBarActivity {
         setContentView(R.layout.activity_project);
 
         pager = (ViewPager) findViewById(R.id.pager);
-        pager.setAdapter(new PageAdapter(getSupportFragmentManager()));
+        viewPagerAdapter = new PageAdapter(getSupportFragmentManager());
+        viewPagerAdapter.setProjectPosition((int) getIntent().getExtras().get("itemPosition"));
+        viewPagerAdapter.setContext(getApplicationContext());
+        pager.setAdapter(viewPagerAdapter);
 
         // Bind the tabs to the ViewPager
         PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
@@ -29,6 +32,7 @@ public class ProjectActivity extends ActionBarActivity {
         int projectPosition = (int) getIntent().getExtras().get("itemPosition");
 
         // ... and get the whole project
+        Everything everything = new Everything();
         everything.load(getApplicationContext());
         Project currentProject = everything.getProject(projectPosition);
 
@@ -46,7 +50,14 @@ public class ProjectActivity extends ActionBarActivity {
      */
     public Project getProject()
     {
+        // Find out which project is currently opened
         int itemPosition = (int) getIntent().getExtras().get("itemPosition");
+
+        // Load the current Everything object
+        Everything everything = new Everything();
+        everything.load(getApplicationContext());
+
+        // And get the Project object out of it
         return everything.getProject(itemPosition);
     }
 
@@ -86,6 +97,13 @@ public class ProjectActivity extends ActionBarActivity {
         return true;
     }
 
+    /**
+     * - Load the current Everything
+     * - Make a Task using the given parameters
+     * - Add the Task to Everything
+     * - save the Everything
+     * - [BETA] refresh each taskListFragment
+     */
     public void createTask(String title, String description, int category, String year, String month, String day)
     {
         // Load everything
@@ -99,6 +117,25 @@ public class ProjectActivity extends ActionBarActivity {
         int projectPosition = (int) getIntent().getExtras().get("itemPosition");
         Project currentProject = everything.getProject(projectPosition);
         currentProject.addTask(taskToAdd, projectPosition, getApplicationContext());
+
+        /**
+         * Refresh all the fragments using their refresh
+         * Begin at one since 0 is the Overview fragment and crashes when cast to TaskListFragment
+         * Decrement getCount() by 1 so that it stops at the last fragment again
+         */
+        for (int i = 1; i < viewPagerAdapter.getCount() - 1; i++) {
+            TaskListFragment refreshingFragment = (TaskListFragment) viewPagerAdapter.getItem(i);
+            refreshingFragment.refresh(getApplicationContext());
+        }
+
+        /**
+         * Now that all the listViews are properly refreshed, we refresh the ViewPager. Because it
+         * resets its position while refreshing, we save the position and set it to the saved
+         * position after the refresh.
+         */
+        int page = pager.getCurrentItem();
+        pager.setAdapter(viewPagerAdapter);
+        pager.setCurrentItem(page);
     }
 
 }

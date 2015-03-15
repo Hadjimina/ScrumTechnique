@@ -9,7 +9,9 @@
         android:icon="@mipmap/ic_launcher"
         android:label="Projects"
         android:theme="@style/AppTheme" >
-        <activity android:name=".ProjectActivity"/>
+        <activity
+            android:name=".ProjectActivity"
+            android:windowSoftInputMode="adjustNothing"/>
 
         <activity
             android:name=".MainActivity"

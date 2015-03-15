@@ -5,6 +5,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
 
@@ -136,6 +139,51 @@ public class ProjectActivity extends ActionBarActivity {
         int page = pager.getCurrentItem();
         pager.setAdapter(viewPagerAdapter);
         pager.setCurrentItem(page);
+    }
+
+    public void updateDescription(View v)
+    {
+
+        // Get the layout of the overview page
+        View layout = pager.getChildAt(0);
+
+        // Get the EditText from the layout and the project index from the intent from MainActivity
+        EditText descEditText = (EditText) layout.findViewById(R.id.project_description);
+        int projectPosition = (int) getIntent().getExtras().get("itemPosition");
+
+        // Load the current Everything object
+        Everything everything = new Everything();
+        everything.load(this);
+
+        // Get the current project, set its description to the entered text and save it
+        Project currentProject = everything.getProject(projectPosition);
+        currentProject.setDescription(descEditText.getText().toString());
+        everything.setProject(projectPosition, currentProject);
+
+        // Save the modified Everything object with fancy exception handling
+        boolean successful = false;
+        try
+        {
+            everything.save(this);
+            successful = true;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            successful = false;
+        }
+        finally
+        {
+            if(successful)
+            {
+                Toast.makeText(this, "Description saved successfully", Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                Toast.makeText(this, "Description could not be saved", Toast.LENGTH_SHORT).show();
+            }
+
+        }
     }
 
 }

@@ -8,7 +8,9 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="Projects"
+
         android:theme="@style/AppTheme" >
+
         <activity android:name=".ProjectActivity"/>
 
         <activity

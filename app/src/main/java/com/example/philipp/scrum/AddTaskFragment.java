@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -31,8 +32,7 @@ public class AddTaskFragment extends DialogFragment
     private EditText yearEditText;
     private EditText monthEditText;
     private EditText dayEditText;
-
-    Context mContext;
+    private Context mContext;
 
     public AddTaskFragment() {
         mContext = getActivity();
@@ -61,8 +61,14 @@ public class AddTaskFragment extends DialogFragment
         monthEditText =       (EditText) dialogLayout.findViewById(R.id.date_month);
         dayEditText =         (EditText) dialogLayout.findViewById(R.id.date_day);
 
+        //Get category array
+       // String[] category_array = mContext.getResources().getStringArray(R.array.category_array);
+
         // Set the spinner
-        taskCategorySpinner.setSelection((int) getArguments().get("category"));
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity().getBaseContext(),
+                R.array.category_array, R.layout.spinner_item);
+       taskCategorySpinner.setAdapter(adapter);
+       taskCategorySpinner.setSelection((int) getArguments().get("category"));
 
         // Assign the buttons
         dialogBuilder.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {

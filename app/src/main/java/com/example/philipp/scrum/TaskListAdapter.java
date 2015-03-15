@@ -1,6 +1,7 @@
 package com.example.philipp.scrum;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +55,7 @@ public class TaskListAdapter extends ArrayAdapter<Task>
         if(t != null)
         {
             TextView textView = (TextView) v.findViewById(android.R.id.text1);
-            textView.setTextColor(0xFF000000); // That's black with alpha 255
+            textView.setTextColor(Color.parseColor("#212121")); //See style textColour
             textView.setText(t.getTitle());
         }
 

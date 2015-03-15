@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/dialog_edittext_hint"
         android:layout_margin="16dp"
+        android:textColor="@color/textColour"
         android:windowSoftInputMode="stateHidden"/>
 
     <EditText
@@ -22,6 +23,7 @@
         android:hint="@string/dialog_description_hint"
         android:windowSoftInputMode="stateHidden"
         android:layout_margin="16dp"
+        android:textColor="@color/textColour"
         android:layout_below="@+id/dialog_projectname_edittext"
         />
 

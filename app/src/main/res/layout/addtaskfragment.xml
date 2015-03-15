@@ -11,6 +11,7 @@
         android:id="@+id/task_title_edittext"
         android:layout_margin="16dp"
         android:hint="Task Title"
+        android:textColor="@color/textColour"
         android:layout_gravity="center_horizontal" />
 
     <EditText
@@ -20,7 +21,8 @@
         android:layout_margin="16dp"
         android:hint="Task Description"
         android:layout_gravity="center_horizontal"
-        android:layout_below="@+id/task_title_edittext"/>
+        android:layout_below="@+id/task_title_edittext"
+        android:textColor="@color/textColour"/>
 
     <Spinner
         android:layout_margin="16dp"
@@ -30,7 +32,8 @@
         android:entries="@array/category_array"
         android:prompt="@string/category_prompt"
         android:layout_below="@+id/task_desc_edittext"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/textColour"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -46,7 +49,8 @@
             android:layout_height="match_parent"
             android:id="@+id/date_year"
             android:inputType="number"
-            android:hint="Year"/>
+            android:hint="Year"
+            android:textColor="@color/textColour"/>
 
         <EditText
             android:layout_weight="1"
@@ -56,7 +60,8 @@
             android:layout_height="match_parent"
             android:id="@+id/date_month"
             android:inputType="number"
-            android:hint="Month"/>
+            android:hint="Month"
+            android:textColor="@color/textColour"/>
 
         <EditText
             android:layout_weight="1"
@@ -66,6 +71,7 @@
             android:layout_height="match_parent"
             android:id="@+id/date_day"
             android:inputType="number"
-            android:hint="Day"/>
+            android:hint="Day"
+            android:textColor="@color/textColour"/>
         </LinearLayout>
 </RelativeLayout>

@@ -1,6 +1,7 @@
 package com.example.philipp.scrum;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,9 +10,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-/**
- * Created by balduin on 2015-03-12.
- */
 public class ProjectsListAdapter extends ArrayAdapter<Project>
 {
     List<Project> items;
@@ -49,7 +47,7 @@ public class ProjectsListAdapter extends ArrayAdapter<Project>
         if(p != null)
         {
             TextView textView = (TextView) v.findViewById(android.R.id.text1);
-            textView.setTextColor(0xFF000000); // That's black with alpha 255
+            textView.setTextColor(Color.parseColor("#212121")); //See style textColour
             textView.setText(p.getName());
         }
 

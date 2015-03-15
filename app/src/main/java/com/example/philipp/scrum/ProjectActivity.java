@@ -72,17 +72,6 @@ public class ProjectActivity extends ActionBarActivity {
         return true;
     }
 
-    public void onClickBtn(View v){
-            // Make a dialog to add a new Task when the user clicks the button
-            AddTaskFragment dialog = new AddTaskFragment();
-            Bundle dialogArgs = new Bundle();
-            // The category 0 is "To Do"
-            dialogArgs.putInt("category", 0);
-            dialog.setArguments(dialogArgs);
-            dialog.show(getFragmentManager(), "MyDialogFragment");
-
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {

@@ -1,7 +1,10 @@
 package com.example.philipp.scrum;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -29,7 +32,7 @@ public class TaskListFragment extends Fragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState)
     {
         final List<Task> taskList = getRefreshedTasklist(getActivity().getApplicationContext());
 
@@ -48,28 +51,57 @@ public class TaskListFragment extends Fragment
 
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1,int pos, long id) {
 
-                // Load everything
-                Everything everything = new Everything();
-                everything.load(context);
+               arg1.setBackgroundColor(Color.parseColor("#FF4444"));
 
-                // Get the project position from the argument and use it to get the whole project object
-                int projectPosition = (int) getArguments().get("project");
-                Project currentProject = everything.getProject(projectPosition);
+                //Convert to final
+                final int position = pos;
+                final View v = arg1;
 
-                //Get category
-                int category = (int) getArguments().get("category");
+                //Build AlertDialog
+                AlertDialog alert= null;
+                AlertDialog.Builder build= new AlertDialog.Builder(getActivity());
+                build.setMessage("Are you sure you want to delete this task ?");
+                build.setCancelable(true);
+                build.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
-                //remove task
-                currentProject.removeTask(category,pos);
+                    //Remove task if "Yes" is clicked
+                    public void onClick(DialogInterface dialog, int id) {
 
-                //Update projectList (before saving so UI comes first)
 
-                taskListAdapter = new TaskListAdapter(context, android.R.layout.simple_list_item_1, currentProject.getCategoryTaskList(category));
-                tasksListView.setAdapter(taskListAdapter);
-                taskListAdapter.notifyDataSetChanged();
+                        // Load everything
+                        Everything everything = new Everything();
+                        everything.load(context);
 
-                // Save everything
-                everything.save(context);
+                        // Get the project position from the argument and use it to get the whole project object
+                        int projectPosition = (int) getArguments().get("project");
+                        Project currentProject = everything.getProject(projectPosition);
+
+                        //Get category
+                        int category = (int) getArguments().get("category");
+
+                        //remove task
+                        currentProject.removeTask(category,position);
+
+                        //Update projectList
+                        taskListAdapter = new TaskListAdapter(context, android.R.layout.simple_list_item_1, currentProject.getCategoryTaskList(category));
+                        tasksListView.setAdapter(taskListAdapter);
+                        taskListAdapter.notifyDataSetChanged();
+
+                        // Save everything
+                        everything.save(context);
+
+                    }
+                })      //Close alert if "No" is clicked
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // if this button is clicked, just close
+                                // the dialog box and set the colour back to white
+                                v.setBackgroundColor(Color.parseColor("#F5F5F5"));
+                                dialog.cancel();
+                            }
+                        });
+                build.show();
+
 
 
 

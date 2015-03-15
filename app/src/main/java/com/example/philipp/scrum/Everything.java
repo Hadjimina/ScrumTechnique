@@ -1,11 +1,9 @@
 package com.example.philipp.scrum;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -136,10 +134,6 @@ public class Everything implements Serializable
         {
             // Assuming that an exception means that there is no saved Everything yet, we just leave
             // it empty.
-            if (ex instanceof FileNotFoundException)
-            {
-                Toast.makeText(context, "Save file does not exist yet", Toast.LENGTH_SHORT).show();
-            }
 
             ex.printStackTrace();
         }

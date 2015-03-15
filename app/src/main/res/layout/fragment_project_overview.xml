@@ -34,12 +34,13 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add a Task"
+        android:text="Update description"
         android:id="@+id/add_task"
-        android:layout_below="@+id/editText"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="117dp"
-        android:onClick="onClickBtn"
+        android:layout_below="@+id/project_description"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
+        android:onClick="updateDescription"
         android:textColor="@color/textColour"/>
 
 </RelativeLayout>

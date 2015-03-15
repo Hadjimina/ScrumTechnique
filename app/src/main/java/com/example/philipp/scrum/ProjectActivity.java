@@ -80,6 +80,7 @@ public class ProjectActivity extends ActionBarActivity {
             dialogArgs.putInt("category", 0);
             dialog.setArguments(dialogArgs);
             dialog.show(getFragmentManager(), "MyDialogFragment");
+
     }
 
     @Override

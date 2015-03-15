@@ -28,9 +28,6 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
-        //TODO change colour of actionbar
-
         // Create & apply the corresponding layout
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -86,7 +83,6 @@ public class MainActivity extends ActionBarActivity {
 
             // Save everything
             everything.save(getApplicationContext());
-
 
         }
         else

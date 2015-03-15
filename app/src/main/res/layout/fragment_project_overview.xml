@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:text="Add a Task"
         android:id="@+id/add_task"
-        android:layout_below="@+id/editText"
+        android:layout_below="@+id/project_description"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="117dp"
         android:onClick="onClickBtn"

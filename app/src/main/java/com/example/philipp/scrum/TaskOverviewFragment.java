@@ -11,8 +11,7 @@ import android.widget.TextView;
 public class TaskOverviewFragment extends Fragment {
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         // Inflate the layout
         View layout = inflater.inflate(R.layout.fragment_project_overview, null);
@@ -34,8 +33,8 @@ public class TaskOverviewFragment extends Fragment {
 
         // Assign the button to add a new task to an object and set an onClickListener
         Button addTask = (Button) layout.findViewById(R.id.add_task);
-        addTask.setOnClickListener(new View.OnClickListener()
-        {
+        addTask.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 // Make a dialog to add a new Task when the user clicks the button
@@ -51,6 +50,6 @@ public class TaskOverviewFragment extends Fragment {
         return layout;
     }
 
-    //TODO show actionbar
+
 
 }

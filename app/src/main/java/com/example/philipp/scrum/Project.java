@@ -15,7 +15,7 @@ import java.util.List;
 
 public class Project implements Serializable
 {
-
+    static final long serialVersionUID = -8997014736174360870L;
     /**
      * Looks a bit complicated at first glance. It's basically a 2D Array, a "List of Lists". The
      * "outermost" index is the category, of which there will always be 5. So if you want to add
@@ -52,10 +52,6 @@ public class Project implements Serializable
         return name;
     }
 
-    public int getNumberOfTasksinCategory(int category){
-        return listOfTaskLists.get(category).size();
-    }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -76,7 +72,6 @@ public class Project implements Serializable
     }
 
     /**
-     * Probably not needed
      *
      * @param category - The category of the wanted task
      * @param position - The position of the wanted task within its category
@@ -109,19 +104,26 @@ public class Project implements Serializable
 
         listOfTaskLists.get(category).add(taskToAdd);
 
-        // Now that the project (this) is equipped with the new task, we may summon Everything and
-        // replace the project with the new one
+        /**
+         * Now that the project (this) is equipped with the new task, we may summon Everything and
+         * replace the project with the new one
+         */
         Everything everything = new Everything();
         everything.load(context);
         everything.setProject(projectPosition, this);
         everything.save(context);
     }
 
-    public void setTask(int category, int taskPosition, Task task)
+    public void setTask(int category, int taskPosition, Task task, Context context, int projectPosition)
     {
         List<Task> categoryList = this.getCategoryTaskList(category);
         categoryList.set(taskPosition, task);
         this.setCategoryTaskList(category, categoryList);
+
+        Everything everything = new Everything();
+        everything.load(context);
+        everything.setProject(projectPosition, this);
+        everything.save(context);
     }
 
     /**
@@ -130,9 +132,16 @@ public class Project implements Serializable
      */
     public void removeTask(int category, int task)
     {
-        listOfTaskLists.get(category).remove(task);
+        List<Task> categoryList = listOfTaskLists.get(category);
+        categoryList.remove(task);
+    }
 
-        // TODO save
+    public void removeTask(Task task)
+    {
+        int category = task.getCategory();
+        List<Task> categoryList = listOfTaskLists.get(category);
+        categoryList.remove(task);
+        this.setCategoryTaskList(category, categoryList);
     }
 
 }

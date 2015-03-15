@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -84,17 +83,18 @@ public class TaskListFragment extends Fragment
         //LongClickListener will remove the selected task
         tasksListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
-            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,int pos, long id) {
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
 
-               arg1.setBackgroundColor(Color.parseColor("#FF4444"));
+                // Don't change colour because if you close the dialog by tapping outside of it, it
+                // won't change back to white
 
                 //Convert to final
                 final int position = pos;
                 final View v = arg1;
 
                 //Build AlertDialog
-                AlertDialog alert= null;
-                AlertDialog.Builder build= new AlertDialog.Builder(getActivity());
+                AlertDialog alert = null;
+                AlertDialog.Builder build = new AlertDialog.Builder(getActivity());
                 build.setMessage("Are you sure you want to delete this task ?");
                 build.setCancelable(true);
                 build.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -115,7 +115,7 @@ public class TaskListFragment extends Fragment
                         int category = (int) getArguments().get("category");
 
                         //remove task
-                        currentProject.removeTask(category,position);
+                        currentProject.removeTask(category, position);
 
                         //Update projectList
                         taskListAdapter = new TaskListAdapter(context, android.R.layout.simple_list_item_1, currentProject.getCategoryTaskList(category));
@@ -126,18 +126,17 @@ public class TaskListFragment extends Fragment
                         everything.save(context);
 
                     }
-                })      //Close alert if "No" is clicked
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                // if this button is clicked, just close
-                                // the dialog box and set the colour back to white
-                                v.setBackgroundColor(Color.parseColor("#F5F5F5"));
-                                dialog.cancel();
-                            }
-                        });
+                });
+
+                //Close alert if "No" is clicked
+                build.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, just close
+                        // the dialog box
+                        dialog.cancel();
+                    }
+                });
                 build.show();
-
-
 
 
                 return true;

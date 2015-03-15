@@ -9,7 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/task_title_edittext"
-        android:layout_margin="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp"
         android:hint="Task Title"
         android:textColor="@color/textColour"
         android:layout_gravity="center_horizontal" />
@@ -18,14 +21,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/task_desc_edittext"
-        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:hint="Task Description"
         android:layout_gravity="center_horizontal"
         android:layout_below="@+id/task_title_edittext"
         android:textColor="@color/textColour"/>
 
     <Spinner
-        android:layout_margin="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:id="@+id/spinner1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

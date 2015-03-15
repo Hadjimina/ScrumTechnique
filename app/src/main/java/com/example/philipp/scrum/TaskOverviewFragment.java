@@ -33,7 +33,7 @@ public class TaskOverviewFragment extends Fragment {
         descriptionText.setText(description);
 
         // Assign the button to add a new task to an object and set an onClickListener
-        Button addTask = (Button) layout.findViewById(R.id.add_task);
+        Button addTask = (Button) layout.findViewById(R.id.update_description);
         addTask.setOnClickListener(new View.OnClickListener()
         {
             @Override

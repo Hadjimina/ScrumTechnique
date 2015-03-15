@@ -15,6 +15,9 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center"
         android:textColor="@color/textColour"
         android:textSize="32sp"
         />
@@ -35,10 +38,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Update Description"
-        android:id="@+id/add_task"
+        android:id="@+id/update_description"
         android:layout_below="@+id/project_description"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="117dp"
+        android:layout_marginEnd="16dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="5dp"
         android:onClick="updateDescription"
         android:textColor="@color/textColour"/>
 

@@ -129,6 +129,76 @@ public class ProjectActivity extends ActionBarActivity {
         Project currentProject = everything.getProject(projectPosition);
         currentProject.addTask(taskToAdd, projectPosition, getApplicationContext());
 
+        refreshViewPager();
+    }
+
+    /**
+     * This method edits a task by giving it the values in taskInfo
+     * @param taskInfo - A bundle with all the fields that belong in the task
+     */
+    public void editTask(Bundle taskInfo)
+    {
+        // Find out position and category
+        int taskPosition = taskInfo.getInt("taskPosition");
+        int taskCategory = taskInfo.getInt("category");
+
+        // Load the current project
+        Project currentProject = getProject();
+
+        // Get the correct task from the project
+        Task taskToEdit = currentProject.getCategoryTaskList(taskCategory).get(taskPosition);
+
+        // If the new and old category are different, delete the current Task and make a new one in
+        // the new category
+        if(taskToEdit.getCategory() != taskCategory)
+        {
+            getProject().removeTask(taskToEdit);
+            Task newTask = new Task(
+                    taskInfo.getString("taskName"),
+                    taskInfo.getString("taskDesc"),
+                    taskInfo.getInt("category"),
+                    String.valueOf(taskInfo.getInt("year")),
+                    String.valueOf(taskInfo.getInt("month")),
+                    String.valueOf(taskInfo.getInt("day"))
+            );
+
+            int projectPosition = (int) getIntent().getExtras().get("itemPosition");
+            getProject().addTask(newTask, projectPosition, getApplicationContext());
+
+        }
+
+        /**
+         * The following block of code fills taskToEdit with the values in the parameter Bundle.
+         * It is only called if the category stays the same; changing categories are handled above.
+         */
+        else
+        {
+
+            taskToEdit.setTitle(taskInfo.getString("taskName"));
+            taskToEdit.setDescription(taskInfo.getString("taskDesc"));
+            // taskToEdit.setCategory(taskInfo.getInt("category"));
+
+            int year = taskInfo.getInt("year");
+            int month = taskInfo.getInt("month");
+            int day = taskInfo.getInt("day");
+
+            if (year != 0 && month != 0 && day != 0) {
+                GregorianCalendar taskDate = new GregorianCalendar(year, month, day);
+                taskToEdit.setDate(taskDate);
+            } else {
+                taskToEdit.setHasDate(false);
+            }
+
+            // Now that taskToEdit is filled with the new values, we may save it.
+            currentProject.setTask(taskCategory, taskPosition, taskToEdit, getApplicationContext(),
+                    getIntent().getExtras().getInt("itemPosition"));
+
+        }
+
+        refreshViewPager();
+    }
+
+    private void refreshViewPager() {
         /**
          * Refresh all the fragments using their refresh
          * Begin at one since 0 is the Overview fragment and crashes when cast to TaskListFragment
@@ -147,66 +217,6 @@ public class ProjectActivity extends ActionBarActivity {
         int page = pager.getCurrentItem();
         pager.setAdapter(viewPagerAdapter);
         pager.setCurrentItem(page);
-    }
-
-    /**
-     * This method edits a task by giving it the values in taskInfo
-     * @param taskInfo - A bundle with all the fields that belong in the task
-     */
-    public void editTask(Bundle taskInfo)
-    {
-        // Find out position and category
-        int taskPosition = taskInfo.getInt("taskPosition");
-        int taskCategory = taskInfo.getInt("category");
-
-        // Load the current project
-        Project currentProject = getProject();
-
-        // Get the correct task from the project
-        Task taskToEdit = currentProject.getTask(taskCategory, taskPosition);
-
-        boolean moveTask = false;
-        if(taskToEdit.getCategory() != taskCategory)
-        {
-            moveTask = true;
-        }
-
-        /**
-         * The following block of code fills taskToEdit with the values in the parameter Bundle.
-         */
-        taskToEdit.setTitle(taskInfo.getString("taskName"));
-        taskToEdit.setDescription(taskInfo.getString("taskDesc"));
-        taskToEdit.setCategory(taskInfo.getInt("category"));
-
-        int year = taskInfo.getInt("year");
-        int month = taskInfo.getInt("month");
-        int day = taskInfo.getInt("day");
-
-        if(year != 0 && month != 0 && day != 0)
-        {
-            GregorianCalendar taskDate = new GregorianCalendar(year, month, day);
-            taskToEdit.setDate(taskDate);
-        }
-        else
-        {
-            taskToEdit.setHasDate(false);
-        }
-
-        // Now that taskToEdit is filled with the new values, we may save it.
-        if(!moveTask)
-        {
-            currentProject.setTask(taskCategory, taskPosition, taskToEdit);
-        }
-        else
-        {
-            //currentProject.removeTask(taskCategory, taskPosition);
-            int projectPosition = getIntent().getExtras().getInt("itemPosition");
-            currentProject.addTask(taskToEdit, projectPosition ,getApplicationContext());
-        }
-
-        Everything everything = new Everything();
-        everything.load(getApplicationContext());
-
     }
 
     /**
@@ -244,15 +254,14 @@ public class ProjectActivity extends ActionBarActivity {
             // Save the modified Everything object with fancy exception handling
             everything.save(this);
             successful = true;
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             successful = false;
+            Toast.makeText(this, "Description could not be saved - " + e.toString(), Toast.LENGTH_LONG).show();
+
         } finally {
             if(successful) {
                 Toast.makeText(this, "Description saved successfully", Toast.LENGTH_SHORT).show();
-            }
-            else {
-                Toast.makeText(this, "Description could not be saved", Toast.LENGTH_SHORT).show();
             }
         }
     }

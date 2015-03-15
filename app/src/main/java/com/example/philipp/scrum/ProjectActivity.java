@@ -29,6 +29,7 @@ public class ProjectActivity extends ActionBarActivity {
 
         // Bind the tabs to the ViewPager
         PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        tabs.setIndicatorColor(0xFF9C27B0);
         tabs.setViewPager(pager);
 
         // Get Project position...

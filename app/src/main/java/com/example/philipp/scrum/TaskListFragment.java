@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.List;
@@ -30,10 +31,10 @@ public class TaskListFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        List<Task> taskList = getRefreshedTasklist(getActivity().getApplicationContext());
+        final List<Task> taskList = getRefreshedTasklist(getActivity().getApplicationContext());
 
         // Make a new TaskListAdapter using the taskList we extracted from the Project above
-        Context context = getActivity().getApplicationContext();
+        final Context context = getActivity().getApplicationContext();
         taskListAdapter = new TaskListAdapter(context, android.R.layout.simple_list_item_1, taskList);
 
         // Get the layout, get the tasksListView from it and apply the adapter created above
@@ -41,6 +42,40 @@ public class TaskListFragment extends Fragment
         View layout = inflater.inflate(R.layout.fragment_tasklist, null);
         tasksListView = (ListView) layout.findViewById(R.id.task_list_view);
         tasksListView.setAdapter(taskListAdapter);
+
+        //LongClickListener will remove the selected task
+        tasksListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,int pos, long id) {
+
+                // Load everything
+                Everything everything = new Everything();
+                everything.load(context);
+
+                // Get the project position from the argument and use it to get the whole project object
+                int projectPosition = (int) getArguments().get("project");
+                Project currentProject = everything.getProject(projectPosition);
+
+                //Get category
+                int category = (int) getArguments().get("category");
+
+                //remove task
+                currentProject.removeTask(category,pos);
+
+                //Update projectList (before saving so UI comes first)
+
+                taskListAdapter = new TaskListAdapter(context, android.R.layout.simple_list_item_1, currentProject.getCategoryTaskList(category));
+                tasksListView.setAdapter(taskListAdapter);
+                taskListAdapter.notifyDataSetChanged();
+
+                // Save everything
+                everything.save(context);
+
+
+
+                return true;
+            }
+        });
 
         return layout;
     }

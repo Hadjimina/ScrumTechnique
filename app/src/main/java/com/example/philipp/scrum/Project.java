@@ -48,6 +48,10 @@ public class Project implements Serializable
         return name;
     }
 
+    public int getNumberOfTasksinCategory(int category){
+        return listOfTaskLists.get(category).size();
+    }
+
     public void setName(String name) {
         this.name = name;
     }

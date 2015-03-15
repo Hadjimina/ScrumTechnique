@@ -5,6 +5,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
 
@@ -138,4 +141,51 @@ public class ProjectActivity extends ActionBarActivity {
         pager.setCurrentItem(page);
     }
 
+    /**
+     * This method updates the description of the currently opened project by setting it to the text
+     * the user entered in the description field.
+     *
+     * Sometimes, when ProjectActivity has been open for a long time and the app has been put in the
+     * background and opened again, descEditText can't be retrieved anymore and is a null object.
+     * In that case the java.lang.IllegalStateException is caught. The user is then given feedback
+     * whether the description was or was not saved.
+     *
+     * @param v
+     * the view that was pressed, in this case it will always be the button R.id.update_description
+     */
+    public void updateDescription(View v)
+    {
+        boolean successful = false;
+        try {
+            // Get the layout of the overview page
+            View layout = pager.getChildAt(0);
+
+            // Get the EditText from the layout and the project index from the intent from MainActivity
+            EditText descEditText = (EditText) layout.findViewById(R.id.project_description);
+            int projectPosition = (int) getIntent().getExtras().get("itemPosition");
+
+            // Load the current Everything object
+            Everything everything = new Everything();
+            everything.load(this);
+
+            // Get the current project, set its description to the entered text and save it
+            Project currentProject = everything.getProject(projectPosition);
+            currentProject.setDescription(descEditText.getText().toString());
+            everything.setProject(projectPosition, currentProject);
+
+            // Save the modified Everything object with fancy exception handling
+            everything.save(this);
+            successful = true;
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+            successful = false;
+        } finally {
+            if(successful) {
+                Toast.makeText(this, "Description saved successfully", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Toast.makeText(this, "Description could not be saved", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 }

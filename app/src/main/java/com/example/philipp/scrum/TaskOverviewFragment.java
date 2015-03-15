@@ -1,19 +1,14 @@
 package com.example.philipp.scrum;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 public class TaskOverviewFragment extends Fragment {
-
-    Context cont;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -32,16 +27,10 @@ public class TaskOverviewFragment extends Fragment {
         titleText.setText(title);
 
 
-
-
         // Set the project description
-        EditText descriptionText = (EditText) layout.findViewById(R.id.project_description);
+        TextView descriptionText = (TextView) layout.findViewById(R.id.project_description);
         String description = currentProject.getDescription();
         descriptionText.setText(description);
-
-        //Hide Keyboard
-        getActivity().getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         // Assign the button to add a new task to an object and set an onClickListener
         Button addTask = (Button) layout.findViewById(R.id.add_task);
@@ -62,6 +51,6 @@ public class TaskOverviewFragment extends Fragment {
         return layout;
     }
 
-
+    //TODO show actionbar
 
 }

@@ -78,12 +78,16 @@ public class PageAdapter extends FragmentPagerAdapter {
     {
 
         // Initialise the fragment that will later be returned
-        Fragment returningFragment = null;
+        Fragment returningFragment;
 
-        // For the leftmost position we generate an overview Fragment
+        // For the leftmost position we generate an overview Fragment. Pass it the project position
+        // so that it can change the description
         if(position == 0)
         {
-            returningFragment = new TaskOverviewFragment();
+            returningFragment = new ProjectOverviewFragment();
+            Bundle fragmentArgs = new Bundle();
+            fragmentArgs.putInt("project", this.projectPosition);
+            returningFragment.setArguments(fragmentArgs);
         }
         // For all other positions, we make a TaskListFragment and tell it which category to display
         else

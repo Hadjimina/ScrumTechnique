@@ -19,6 +19,7 @@ public class MainActivity extends ActionBarActivity {
     // Never make this a ListAdapter again, otherwise notifyDataSetChanged() will cease working
     ArrayAdapter<Project> projectsListAdapter; // = new ProjectsListAdapter(this, android.R.id.text1);
     List<Project> projectList;
+    ListView projectsListView;
 
     /**
      * Is called when the Activity is first instantiated
@@ -36,7 +37,7 @@ public class MainActivity extends ActionBarActivity {
 
         // Link the listView in the layout to an android.widget.ListView object
         // final so that it can be accessed from the inner class at setOnItemClickListener.
-        final ListView projectsListView = (ListView) findViewById(R.id.projectsListView);
+        projectsListView = (ListView) findViewById(R.id.projectsListView);
 
         // Get the current list of projects
         Everything everything = new Everything();
@@ -52,11 +53,6 @@ public class MainActivity extends ActionBarActivity {
         {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int itemPosition, long id) {
-
-                // ListView Clicked item value
-                String projectName = projectList.get(itemPosition).getName();
-                String projectDesc = projectList.get(itemPosition).getDescription();
-
                 // Start ProjectActivity and pass it the index of selected Project
                 Intent myIntent = new Intent(MainActivity.this, ProjectActivity.class);
 
@@ -82,16 +78,16 @@ public class MainActivity extends ActionBarActivity {
             // Create & add the Project
             everything.addProject(new Project(name, description));
 
+            //Update projectList (before saving so UI comes first)
+            List<Project> projectList = everything.getProjectList();
+            projectsListAdapter = new ProjectsListAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, projectList);
+            projectsListView.setAdapter(projectsListAdapter);
+            projectsListAdapter.notifyDataSetChanged();
+
             // Save everything
             everything.save(getApplicationContext());
 
-            //Update projectList
-            projectList.clear();
-            projectList = everything.getProjectList();
 
-          //  projectsListAdapter.clear();
-            projectsListAdapter.addAll(projectList);
-            projectsListAdapter.notifyDataSetChanged();
         }
         else
         {

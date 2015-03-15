@@ -88,15 +88,16 @@ public class TaskListFragment extends Fragment
                 // Don't change colour because if you close the dialog by tapping outside of it, it
                 // won't change back to white
 
-                //Convert to final
+                // Convert to final
                 final int position = pos;
                 final View v = arg1;
 
-                //Build AlertDialog
-                AlertDialog alert = null;
+                // Build AlertDialog Builder
                 AlertDialog.Builder build = new AlertDialog.Builder(getActivity());
-                build.setMessage("Are you sure you want to delete this task ?");
+                build.setMessage("Do you want to delete this task?");
                 build.setCancelable(true);
+
+                // Positive Button deletes the given task, saves and refreshes
                 build.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
                     //Remove task if "Yes" is clicked
@@ -111,13 +112,13 @@ public class TaskListFragment extends Fragment
                         int projectPosition = (int) getArguments().get("project");
                         Project currentProject = everything.getProject(projectPosition);
 
-                        //Get category
+                        // Get category
                         int category = (int) getArguments().get("category");
 
-                        //remove task
+                        // Remove task
                         currentProject.removeTask(category, position);
 
-                        //Update projectList
+                        // Update projectList
                         taskListAdapter = new TaskListAdapter(context, android.R.layout.simple_list_item_1, currentProject.getCategoryTaskList(category));
                         tasksListView.setAdapter(taskListAdapter);
                         taskListAdapter.notifyDataSetChanged();
@@ -136,6 +137,7 @@ public class TaskListFragment extends Fragment
                         dialog.cancel();
                     }
                 });
+
                 build.show();
 
 

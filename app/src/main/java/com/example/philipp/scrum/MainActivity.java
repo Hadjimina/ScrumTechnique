@@ -1,6 +1,10 @@
 package com.example.philipp.scrum;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -20,6 +24,8 @@ public class MainActivity extends ActionBarActivity {
     ArrayAdapter<Project> projectsListAdapter; // = new ProjectsListAdapter(this, android.R.id.text1);
     List<Project> projectList;
     ListView projectsListView;
+    public static Activity activity;
+    Context context;
 
     /**
      * Is called when the Activity is first instantiated
@@ -31,6 +37,9 @@ public class MainActivity extends ActionBarActivity {
         // Create & apply the corresponding layout
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        activity = this;
+
 
         // Link the listView in the layout to an android.widget.ListView object
         // final so that it can be accessed from the inner class at setOnItemClickListener.
@@ -59,6 +68,67 @@ public class MainActivity extends ActionBarActivity {
 
 
                 MainActivity.this.startActivity(myIntent);
+            }
+        });
+
+        projectsListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                final int projectPosition = position;
+
+                AlertDialog.Builder build = new AlertDialog.Builder(activity);
+                build.setMessage("Do you want to delete this project?");
+                build.setCancelable(true);
+
+                /**
+                 * Set the positive button. On its click, the current Everything is loaded, the
+                 * project that has been long-pressed is removed from the projectsList and the
+                 * Everything object is saved again. Then the ProjectsListAdapter is set again to
+                 * refresh the contents of the list.
+                 */
+
+                build.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        // Load the current Everything object
+                        Everything everything = new Everything();
+                        everything.load(getApplicationContext());
+
+                        // Delete the project that has been long-pressed
+                        everything.removeProject(projectPosition);
+
+                        // Save again
+                        everything.save(getApplicationContext());
+
+                        //Refresh the List by making a new ProjectsListAdapter...
+                        projectsListAdapter = new ProjectsListAdapter(
+                                getApplicationContext(),
+                                android.R.layout.simple_list_item_1,
+                                everything.getProjectList()
+                        );
+
+                        // ...assigning it to the List view...
+                        projectsListView.setAdapter(projectsListAdapter);
+
+                        // ...and refreshing it.
+                        projectsListAdapter.notifyDataSetChanged();
+
+                    }
+                });
+
+                // Set negative button to a simple "No" cancelling the dialog without further action
+                build.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                build.show();
+
+                return true;
             }
         });
     }

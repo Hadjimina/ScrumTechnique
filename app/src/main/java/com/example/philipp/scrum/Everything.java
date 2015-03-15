@@ -1,9 +1,11 @@
 package com.example.philipp.scrum;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -33,7 +35,7 @@ public class Everything implements Serializable
     // The only field is a List of all projects.
     List<Project> projectList = new ArrayList<Project>();
 
-    // Simple methods
+    // Simple methods for interaction
     public void addProject(Project projectToAdd)
     {
         projectList.add(projectToAdd);
@@ -49,6 +51,10 @@ public class Everything implements Serializable
         return projectList.get(index);
     }
 
+    /**
+     * This is not really necessary; each time the number of projects is needed, the projectList is
+     * already in RAM. Then we can just use projectList.size() from there.
+     */
     public int getNumberOfProjects()
     {
       return  projectList.size();
@@ -59,18 +65,28 @@ public class Everything implements Serializable
         return this.projectList;
     }
 
-    //TODO Add clear function
+    /**
+     * This method simply creates a new, empty Everything object and writes it to the save file,
+     * effectively deleting all the contents of the app.
+     *
+     * @param context - This method calls save() which needs a context
+     */
+    public void clear(Context context)
+    {
+        Everything everything = new Everything();
+        everything.save(context);
+    }
 
     /**
      * This method saves an Everything object to internal storage. To use it, call Everything.save()
-     * It needs a context passed so that it can get the internal storage files directory.
+     * It needs a context passed to get the internal storage files directory.
      */
     public void save(Context context)
     {
         try
         {
             // Make an ObjectOutputStream that writes objects to scrumSave.txt
-            File savefile = new File(context.getFilesDir().getPath() + R.string.filename);
+            File savefile = new File(context.getFilesDir().getPath() + "/" + "scrumSave.txt");
             FileOutputStream fos = new FileOutputStream(savefile);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
 
@@ -98,13 +114,8 @@ public class Everything implements Serializable
     {
         try
         {
-            /**
-             * Even if you save a file to /files/scrumSave.ser it produces a file called /files/
-             * files2131492892. Using this horrible hack, we find the correct file: We get the
-             * files directory as a path string (which has no forward slash at the end) and append
-             * the magic number. This gives us the path to the file.
-             */
-            String pathString = context.getFilesDir().getPath() + "2131492892";
+            // Get the file that presumably has the stored information
+            String pathString = context.getFilesDir().getPath() + "/scrumSave.txt";
             File savefile = new File(pathString);
 
             // Make an ObjectInputStream that reads objects from save.txt
@@ -125,6 +136,11 @@ public class Everything implements Serializable
         {
             // Assuming that an exception means that there is no saved Everything yet, we just leave
             // it empty.
+            if (ex instanceof FileNotFoundException)
+            {
+                Toast.makeText(context, "Save file does not exist yet", Toast.LENGTH_SHORT).show();
+            }
+
             ex.printStackTrace();
         }
     }

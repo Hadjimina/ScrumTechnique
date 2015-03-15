@@ -96,7 +96,7 @@ public class ProjectActivity extends ActionBarActivity {
         Task taskToAdd = new Task(title, description, category, year, month, day);
 
         // Get the current project position
-        int projectPosition = pager.getCurrentItem() - 1;
+        int projectPosition = (int) getIntent().getExtras().get("itemPosition");
         Project currentProject = everything.getProject(projectPosition);
         currentProject.addTask(taskToAdd, projectPosition, getApplicationContext());
     }

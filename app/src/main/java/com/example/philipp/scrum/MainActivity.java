@@ -112,7 +112,7 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         // If the user clicked the add button...
-        if(id == R.id.action_add_task)
+        if(id == R.id.action_add_project)
         {
             // ...Show up the dialog for adding a new project
             DialogFragment myDialogFragment = new ProjectDialogFragment();

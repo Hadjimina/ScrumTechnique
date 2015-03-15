@@ -6,10 +6,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -21,35 +19,11 @@ public class TaskListFragment extends Fragment
         // Inform the fragment about current Project and category
         Project currentProject = ((ProjectActivity) getActivity()).getProject();
         int category = (int) getArguments().get("category");
+        List<Task> taskList = currentProject.getCategoryTaskList(category);
 
-        /**
-         * --- Adapter Creation ---
-         *
-         * We could at this point also create a custom adapter that returns ListView items based on
-         * the given Task object, but it's easier to make an ArrayList<String> amd copy the names
-         * of the tasks into it. Then we can use a standard ArrayAdapter<String>.
-         */
-        ArrayList<String> titleList;
-        {
-            // This method gives us the Task list for a given project and a given category.
-            List<Task> categoryTaskList = currentProject.getCategoryTaskList(category);
-
-            // Create an ArrayList that will hold all the titles
-            titleList = new ArrayList<String>();
-
-            // Fill it with the titles
-            for(int i = 0; i < categoryTaskList.size(); i++)
-            {
-                Task currentTask = categoryTaskList.get(i);
-                String taskTitle = currentTask.getTitle();
-                titleList.add(taskTitle);
-            }
-        }
-
-
-        // Make an Array Adapter that uses titleList to fill the listView
+        // Make a new TaskListAdapter using the taskList we extracted from the Project above
         Context context = getActivity().getApplicationContext();
-        ArrayAdapter<String> taskListAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, titleList);
+        TaskListAdapter taskListAdapter = new TaskListAdapter(context, android.R.layout.simple_list_item_1, taskList);
 
         // Get the layout, get the tasksListView from it and apply the adapter created above
         View layout = inflater.inflate(R.layout.fragment_tasklist, null);

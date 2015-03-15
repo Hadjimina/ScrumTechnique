@@ -13,6 +13,16 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 
+/**
+ * This class has the purpose of displaying a dialog for adding a Task. The corresponding layout is
+ * in /app/res/layout/addtaskfragment.xml. It has two text fields for title and description, a
+ * spinner which lets you select the categories and three number fields for year, day and month.
+ * When the positive button ("Add") is pressed, all these values are sent back to ProjectActivity by
+ * calling its createTask() method. This further processes the data and eventually adds a Task.
+ *
+ * TODO: refresh the ListView in each TaskListFragment when a Task has been added
+ */
+
 public class AddTaskFragment extends DialogFragment
 {
     private EditText taskNameEdittext;

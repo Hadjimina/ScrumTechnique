@@ -20,8 +20,6 @@ import android.widget.Toast;
  * spinner which lets you select the categories and three number fields for year, day and month.
  * When the positive button ("Add") is pressed, all these values are sent back to ProjectActivity by
  * calling its createTask() method. This further processes the data and eventually adds a Task.
- *
- * TODO: refresh the ListView in each TaskListFragment when a Task has been added
  */
 
 public class AddTaskFragment extends DialogFragment
@@ -43,7 +41,11 @@ public class AddTaskFragment extends DialogFragment
     {
         // Make a dialogBuilder and set the title
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
-        dialogBuilder.setMessage(R.string.add_task_message);
+        if(getArguments().getBoolean("editTask")) {
+            dialogBuilder.setMessage("Edit task");
+        } else {
+            dialogBuilder.setMessage(R.string.add_task_message);
+        }
 
         // Get the dialog layout and apply it
         View dialogLayout = getActivity().getLayoutInflater().inflate(R.layout.addtaskfragment, null);
@@ -61,14 +63,23 @@ public class AddTaskFragment extends DialogFragment
         monthEditText =       (EditText) dialogLayout.findViewById(R.id.date_month);
         dayEditText =         (EditText) dialogLayout.findViewById(R.id.date_day);
 
-        //Get category array
-       // String[] category_array = mContext.getResources().getStringArray(R.array.category_array);
+        // If the user is editing a task, fill the Views with the attributes of the task to edit
+        Bundle arguments = getArguments();
+        taskNameEdittext.setText(arguments.getCharSequence("title"));
+        taskDescEdittext.setText(arguments.getCharSequence("description"));
+        taskCategorySpinner.setSelection(arguments.getInt("category"));
+        if(arguments.getBoolean("hasDate"))
+        {
+            yearEditText.setText(String.valueOf(arguments.getInt("year")));
+            monthEditText.setText(String.valueOf(arguments.getInt("month")));
+            dayEditText.setText(String.valueOf(arguments.getInt("day")));
+        }
 
         // Set the spinner
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity().getBaseContext(),
                 R.array.category_array, R.layout.spinner_item);
-       taskCategorySpinner.setAdapter(adapter);
-       taskCategorySpinner.setSelection((int) getArguments().get("category"));
+        taskCategorySpinner.setAdapter(adapter);
+        taskCategorySpinner.setSelection((int) getArguments().get("category"));
 
         // Assign the buttons
         dialogBuilder.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
@@ -85,9 +96,33 @@ public class AddTaskFragment extends DialogFragment
                 // Only proceed if the name is not empty
                 if(!taskName.equals(""))
                 {
-                    // Send them back to the createTask method in ProjectActivity
                     ProjectActivity callingActivity = (ProjectActivity) getActivity();
-                    callingActivity.createTask(taskName, taskDesc, category, year, day, month);
+
+                    // If the user is editing a task, call editTask in ProjectActivity and pass it
+                    // all the values, and additionally the position of the clicked task within its
+                    // category.
+                    if(getArguments().getBoolean("editTask"))
+                    {
+                        Bundle taskInfo = new Bundle();
+
+                        taskInfo.putString("taskName", taskName);
+                        taskInfo.putString("taskDesc", taskDesc);
+                        taskInfo.putInt("category", category);
+                        if(!year.equals("") && !month.equals("") && !day.equals("")) {
+                            taskInfo.putInt("year", Integer.parseInt(year));
+                            taskInfo.putInt("month", Integer.parseInt(month));
+                            taskInfo.putInt("day", Integer.parseInt(day));
+                        }
+
+                        taskInfo.putInt("taskPosition", getArguments().getInt("taskPosition"));
+
+                        callingActivity.editTask(taskInfo);
+                    }
+                    // If the user wants to create an entire new Task, use the createTask() method.
+                    else
+                    {
+                        callingActivity.createTask(taskName, taskDesc, category, year, day, month);
+                    }
                 }
                 else
                 {

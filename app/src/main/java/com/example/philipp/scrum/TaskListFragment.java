@@ -7,8 +7,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 
@@ -41,6 +44,39 @@ public class TaskListFragment extends Fragment
         View layout = inflater.inflate(R.layout.fragment_tasklist, null);
         tasksListView = (ListView) layout.findViewById(R.id.task_list_view);
         tasksListView.setAdapter(taskListAdapter);
+        tasksListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Instantiate a new Dialog fragment
+                AddTaskFragment dialog = new AddTaskFragment();
+
+                // Make the argument bundle
+                Bundle dialogArgs = new Bundle();
+                List taskList = getRefreshedTasklist(getActivity().getApplicationContext());
+                Task clickedTask = (Task) taskList.get(position);
+
+                // Fill the bundle with all the task elements
+                dialogArgs.putCharSequence("title", clickedTask.getTitle());
+                dialogArgs.putCharSequence("description", clickedTask.getDescription());
+                dialogArgs.putInt("category", clickedTask.getCategory());
+
+                if(clickedTask.hasDate())
+                {
+                    GregorianCalendar taskDate = clickedTask.getDate();
+                    dialogArgs.putInt("year", taskDate.get(Calendar.YEAR));
+                    dialogArgs.putInt("month", taskDate.get(Calendar.MONTH));
+                    dialogArgs.putInt("day", taskDate.get(Calendar.DAY_OF_MONTH));
+                    dialogArgs.putBoolean("hasDate", true);
+                }
+                else dialogArgs.putBoolean("hasDate", false);
+
+                dialogArgs.putBoolean("editTask", true);
+                dialogArgs.putInt("taskPosition", position);
+
+                dialog.setArguments(dialogArgs);
+                dialog.show(getActivity().getFragmentManager(), "MyDialogFragment");
+            }
+        });
 
         return layout;
     }

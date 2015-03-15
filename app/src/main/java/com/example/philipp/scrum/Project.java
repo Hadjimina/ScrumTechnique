@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by balduin on 2015-03-11 19:01
+ * Created by balduin on 2015-03-11
  *
  * This class can save a Project. Its only fields are the name and the description (Strings) and a
  * 2D List of all the tasks
@@ -44,6 +44,10 @@ public class Project implements Serializable
         return listOfTaskLists.get(category);
     }
 
+    public void setCategoryTaskList(int category, List<Task> taskList){
+        listOfTaskLists.set(category, taskList);
+    }
+
     public String getName() {
         return name;
     }
@@ -76,7 +80,7 @@ public class Project implements Serializable
      */
     public Task getTask(int category, int position)
     {
-        return listOfTaskLists.get(category).get(position);
+        return this.listOfTaskLists.get(category).get(position);
     }
 
     /**
@@ -107,7 +111,13 @@ public class Project implements Serializable
         everything.load(context);
         everything.setProject(projectPosition, this);
         everything.save(context);
+    }
 
+    public void setTask(int category, int taskPosition, Task task)
+    {
+        List<Task> categoryList = this.getCategoryTaskList(category);
+        categoryList.set(taskPosition, task);
+        this.setCategoryTaskList(category, categoryList);
     }
 
     /**

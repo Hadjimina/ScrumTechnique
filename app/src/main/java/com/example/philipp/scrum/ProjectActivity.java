@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
 
+import java.util.GregorianCalendar;
+
 public class ProjectActivity extends ActionBarActivity {
 
     ViewPager pager;
@@ -77,13 +79,13 @@ public class ProjectActivity extends ActionBarActivity {
     {
         int id = item.getItemId();
 
-        // If the user clicked the add button...
+        // If the user clicked the add button, show the Dialog that adds a new Task
         if(id == R.id.action_add_task)
         {
             // Show up a dialog to add a new Task when the user clicks the button
             AddTaskFragment dialog = new AddTaskFragment();
 
-            // Pass the current category to the dialog as an agrument
+            // Pass the current category to the dialog as an argument
             // -1 so that the first category, To Do, becomes the 0th item
             int category = pager.getCurrentItem() - 1;
 
@@ -93,9 +95,14 @@ public class ProjectActivity extends ActionBarActivity {
                 category = 0;
             }
 
+            // Tell the dialog in which category to create a task
             Bundle dialogArgs = new Bundle();
             dialogArgs.putInt("category", category);
+
+            // It needs to make a new task, not edit an existing one
+            dialogArgs.putBoolean("editTask", false);
             dialog.setArguments(dialogArgs);
+
             dialog.show(this.getFragmentManager(), "MyDialogFragment");
         }
         return true;
@@ -106,7 +113,7 @@ public class ProjectActivity extends ActionBarActivity {
      * - Make a Task using the given parameters
      * - Add the Task to Everything
      * - save the Everything
-     * - [BETA] refresh each taskListFragment
+     * - refresh each taskListFragment
      */
     public void createTask(String title, String description, int category, String year, String month, String day)
     {
@@ -140,6 +147,66 @@ public class ProjectActivity extends ActionBarActivity {
         int page = pager.getCurrentItem();
         pager.setAdapter(viewPagerAdapter);
         pager.setCurrentItem(page);
+    }
+
+    /**
+     * This method edits a task by giving it the values in taskInfo
+     * @param taskInfo - A bundle with all the fields that belong in the task
+     */
+    public void editTask(Bundle taskInfo)
+    {
+        // Find out position and category
+        int taskPosition = taskInfo.getInt("taskPosition");
+        int taskCategory = taskInfo.getInt("category");
+
+        // Load the current project
+        Project currentProject = getProject();
+
+        // Get the correct task from the project
+        Task taskToEdit = currentProject.getTask(taskCategory, taskPosition);
+
+        boolean moveTask = false;
+        if(taskToEdit.getCategory() != taskCategory)
+        {
+            moveTask = true;
+        }
+
+        /**
+         * The following block of code fills taskToEdit with the values in the parameter Bundle.
+         */
+        taskToEdit.setTitle(taskInfo.getString("taskName"));
+        taskToEdit.setDescription(taskInfo.getString("taskDesc"));
+        taskToEdit.setCategory(taskInfo.getInt("category"));
+
+        int year = taskInfo.getInt("year");
+        int month = taskInfo.getInt("month");
+        int day = taskInfo.getInt("day");
+
+        if(year != 0 && month != 0 && day != 0)
+        {
+            GregorianCalendar taskDate = new GregorianCalendar(year, month, day);
+            taskToEdit.setDate(taskDate);
+        }
+        else
+        {
+            taskToEdit.setHasDate(false);
+        }
+
+        // Now that taskToEdit is filled with the new values, we may save it.
+        if(!moveTask)
+        {
+            currentProject.setTask(taskCategory, taskPosition, taskToEdit);
+        }
+        else
+        {
+            //currentProject.removeTask(taskCategory, taskPosition);
+            int projectPosition = getIntent().getExtras().getInt("itemPosition");
+            currentProject.addTask(taskToEdit, projectPosition ,getApplicationContext());
+        }
+
+        Everything everything = new Everything();
+        everything.load(getApplicationContext());
+
     }
 
     /**

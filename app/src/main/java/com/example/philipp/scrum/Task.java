@@ -31,11 +31,12 @@ public class Task implements Serializable
     }
     public void setDate(GregorianCalendar date) {
         this.date = date;
+        this.hasDate = true;
     }
     public boolean hasDate() {
         return hasDate;
     }
-    public void setHasDate(boolean hasDate) {
+    public void setHasDate(Boolean hasDate) {
         this.hasDate = hasDate;
     }
     public void setCategory(int category) {
@@ -44,7 +45,14 @@ public class Task implements Serializable
     public int getCategory() {
         return this.category;
     }
-
+    public GregorianCalendar getDate()
+    {
+        if(hasDate) {
+            return this.date;
+        } else {
+            return null;
+        }
+    }
 
     /**
      * Constructs a Task from the given arguments

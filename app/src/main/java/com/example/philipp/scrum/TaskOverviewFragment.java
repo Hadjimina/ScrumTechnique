@@ -15,7 +15,7 @@ public class TaskOverviewFragment extends Fragment {
     {
 
         // Inflate the layout
-        View layout = inflater.inflate(R.layout.fragment_taskoverview, null);
+        View layout = inflater.inflate(R.layout.fragment_project_overview, null);
 
         // Get the currently opened project. Cast to ProjectActivity since not every Activity has
         // the getProject() method.

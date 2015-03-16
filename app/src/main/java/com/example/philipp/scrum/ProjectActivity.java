@@ -182,6 +182,7 @@ public class ProjectActivity extends ActionBarActivity {
             oldCategoryTaskList.remove(taskPosition);
             currentProject.setCategoryTaskList(oldTaskCategory, oldCategoryTaskList);
 
+            // Add the altered Project to Everything
             Everything everything = new Everything();
             everything.load(getApplicationContext());
             everything.setProject(projectPosition, currentProject);
@@ -198,6 +199,7 @@ public class ProjectActivity extends ActionBarActivity {
 
             taskToEdit.setTitle(taskInfo.getString("taskName"));
             taskToEdit.setDescription(taskInfo.getString("taskDesc"));
+            // Category stays the same so we don't need to do this:
             // taskToEdit.setCategory(taskInfo.getInt("category"));
 
             int year = taskInfo.getInt("year");
@@ -211,7 +213,11 @@ public class ProjectActivity extends ActionBarActivity {
                 taskToEdit.setHasDate(false);
             }
 
-            // Now that taskToEdit is filled with the new values, we may save it.
+            /**
+             * Now that taskToEdit is filled with the new values, we may set it in the Project.
+             * Because setTask() already has re-saving implemented, we don't need to save after it,
+             * but we need to pass the context.
+             */
             currentProject.setTask(taskCategory, taskPosition, taskToEdit, getApplicationContext(),
                     getIntent().getExtras().getInt("itemPosition"));
 
@@ -249,6 +255,8 @@ public class ProjectActivity extends ActionBarActivity {
      * background and opened again, descEditText can't be retrieved anymore and is a null object.
      * In that case the java.lang.IllegalStateException is caught. The user is then given feedback
      * whether the description was or was not saved.
+     *
+     * EDIT: The above bug has been resolved. Refer to the section "Resultate und Test" in the docs.
      *
      * @param v
      * the view that was pressed, in this case it will always be the button R.id.update_description

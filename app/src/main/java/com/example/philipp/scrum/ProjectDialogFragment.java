@@ -45,7 +45,7 @@ public class ProjectDialogFragment extends DialogFragment
         projectDescEdittext = (EditText) dialogLayout.findViewById(R.id.dialog_projectdescription_edittext);
 
         // Assign the buttons
-        dialogBuilder.setPositiveButton(R.string.add, new DialogInterface.OnClickListener()
+        dialogBuilder.setPositiveButton("Save", new DialogInterface.OnClickListener()
         {
             @Override
             public void onClick(DialogInterface dialog, int which)

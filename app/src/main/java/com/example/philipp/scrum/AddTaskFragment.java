@@ -31,6 +31,7 @@ public class AddTaskFragment extends DialogFragment
     private EditText monthEditText;
     private EditText dayEditText;
     private Context mContext;
+    private int oldTaskCategory;
 
     public AddTaskFragment() {
         mContext = getActivity();
@@ -43,17 +44,27 @@ public class AddTaskFragment extends DialogFragment
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
         if(getArguments().getBoolean("editTask")) {
             dialogBuilder.setMessage("Edit task");
+            oldTaskCategory = getArguments().getInt("category");
         } else {
             dialogBuilder.setMessage(R.string.add_task_message);
         }
 
-        // Get the dialog layout and apply it
+        Bundle arguments = getArguments();
+
+        //Get the dialog layout and apply it
         View dialogLayout = getActivity().getLayoutInflater().inflate(R.layout.addtaskfragment, null);
         dialogBuilder.setView(dialogLayout);
 
-        // Automatically show up the keyboard
-        InputMethodManager imm = (InputMethodManager)  getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+
+
+        /**
+         * Automatically show up the keyboard but only if the user is creating a new Task.
+         * Otherwise it is likely that the user just wants to view the task, but not edit it
+         */
+        if(!getArguments().getBoolean("editTask")) {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        }
 
         // Initialise all the views in the dialog
         taskNameEdittext =    (EditText) dialogLayout.findViewById(R.id.task_title_edittext);
@@ -64,7 +75,6 @@ public class AddTaskFragment extends DialogFragment
         dayEditText =         (EditText) dialogLayout.findViewById(R.id.date_day);
 
         // If the user is editing a task, fill the Views with the attributes of the task to edit
-        Bundle arguments = getArguments();
         taskNameEdittext.setText(arguments.getCharSequence("title"));
         taskDescEdittext.setText(arguments.getCharSequence("description"));
         taskCategorySpinner.setSelection(arguments.getInt("category"));
@@ -82,7 +92,7 @@ public class AddTaskFragment extends DialogFragment
         taskCategorySpinner.setSelection((int) getArguments().get("category"));
 
         // Assign the buttons
-        dialogBuilder.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
+        dialogBuilder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Retrieve all the entered values
@@ -104,6 +114,8 @@ public class AddTaskFragment extends DialogFragment
                     if(getArguments().getBoolean("editTask"))
                     {
                         Bundle taskInfo = new Bundle();
+
+                        taskInfo.putInt("oldCategory", oldTaskCategory);
 
                         taskInfo.putString("taskName", taskName);
                         taskInfo.putString("taskDesc", taskDesc);

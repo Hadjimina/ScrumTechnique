@@ -103,7 +103,6 @@ public class TaskListFragment extends Fragment
                     //Remove task if "Yes" is clicked
                     public void onClick(DialogInterface dialog, int id) {
 
-
                         // Load everything
                         Everything everything = new Everything();
                         everything.load(context);
@@ -139,7 +138,6 @@ public class TaskListFragment extends Fragment
                 });
 
                 build.show();
-
 
                 return true;
             }

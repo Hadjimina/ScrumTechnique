@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.astuetz.PagerSlidingTabStrip;
 
 import java.util.GregorianCalendar;
+import java.util.List;
 
 public class ProjectActivity extends ActionBarActivity {
 
@@ -23,10 +24,14 @@ public class ProjectActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project);
 
+
         pager = (ViewPager) findViewById(R.id.pager);
         viewPagerAdapter = new PageAdapter(getSupportFragmentManager());
         viewPagerAdapter.setProjectPosition((int) getIntent().getExtras().get("itemPosition"));
         viewPagerAdapter.setContext(getApplicationContext());
+
+        // Keep all pages in memory so that the first one isn't destroyed
+        pager.setOffscreenPageLimit(5);
         pager.setAdapter(viewPagerAdapter);
 
         // Bind the tabs to the ViewPager
@@ -124,9 +129,14 @@ public class ProjectActivity extends ActionBarActivity {
         // Create Task
         Task taskToAdd = new Task(title, description, category, year, month, day);
 
-        // Get the current project position
+        // Get the current project position and the corresponding project
         int projectPosition = (int) getIntent().getExtras().get("itemPosition");
         Project currentProject = everything.getProject(projectPosition);
+
+        /**
+         * Add the task to the current Project. No need to save afterwards, since Project.addTask()
+         * already takes care of that.
+         */
         currentProject.addTask(taskToAdd, projectPosition, getApplicationContext());
 
         refreshViewPager();
@@ -141,18 +151,18 @@ public class ProjectActivity extends ActionBarActivity {
         // Find out position and category
         int taskPosition = taskInfo.getInt("taskPosition");
         int taskCategory = taskInfo.getInt("category");
+        int oldTaskCategory = taskInfo.getInt("oldCategory");
 
         // Load the current project
         Project currentProject = getProject();
 
         // Get the correct task from the project
-        Task taskToEdit = currentProject.getCategoryTaskList(taskCategory).get(taskPosition);
+        Task taskToEdit = currentProject.getCategoryTaskList(oldTaskCategory).get(taskPosition);
 
         // If the new and old category are different, delete the current Task and make a new one in
         // the new category
-        if(taskToEdit.getCategory() != taskCategory)
+        if(oldTaskCategory != taskCategory)
         {
-            getProject().removeTask(taskToEdit);
             Task newTask = new Task(
                     taskInfo.getString("taskName"),
                     taskInfo.getString("taskDesc"),
@@ -163,7 +173,19 @@ public class ProjectActivity extends ActionBarActivity {
             );
 
             int projectPosition = (int) getIntent().getExtras().get("itemPosition");
-            getProject().addTask(newTask, projectPosition, getApplicationContext());
+
+            // Add the Task in the new category
+            currentProject.addTask(newTask, projectPosition, getApplicationContext());
+
+            // And remove it from the old category
+            List<Task> oldCategoryTaskList = currentProject.getCategoryTaskList(oldTaskCategory);
+            oldCategoryTaskList.remove(taskPosition);
+            currentProject.setCategoryTaskList(oldTaskCategory, oldCategoryTaskList);
+
+            Everything everything = new Everything();
+            everything.load(getApplicationContext());
+            everything.setProject(projectPosition, currentProject);
+            everything.save(getApplicationContext());
 
         }
 
